@@ -1,0 +1,50 @@
+/* General */
+  /* jQuery toggle container support */
+  .toggleContainerTrigger {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+  }
+  /* DataTables support */
+  table.data_table img.icon {
+    width:2em;
+  }
+
+/* admin section customizations */
+
+/* hide WP logo link in admin bar */
+#wp-admin-bar-wp-logo {
+  display:none;
+}
+
+/* profile screen customizations */
+
+/*lay it out nicely on the admin edit profile page*/
+.pf-profile-layout > tbody > tr > td { 
+  padding:0; 
+  vertical-align: top;
+}
+
+/*status tags*/
+.pf-field-status {
+  margin: 0 0.5em;
+  border-radius: 3px;
+  padding: 5px 10px;
+  font-weight: bold;
+}
+
+.pf-field-status-approved {
+  color:white;
+  background-color: green;
+}
+.pf-field-status-pending {
+  background-color: goldenrod;
+}
+.pf_approve {
+  background: green !important;
+  border-color: green !important;
+}
+.pf_disapprove {
+  background: tomato !important;
+  border-color: tomato !important;
+}
