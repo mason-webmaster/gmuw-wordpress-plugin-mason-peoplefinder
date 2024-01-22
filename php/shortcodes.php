@@ -191,14 +191,13 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
   //Initialize output variable
     $content="";
 
-  //Build output
-    $content.="<div class='pf-results'>";
-
-  //do we even have a search?
-  if (!isset($_GET['gmuw_pf_search']) || empty($_GET['gmuw_pf_search'])) {
-    $content .= '<p class="pf-search-results-note">No search term entered.</p></div>';
-    return $content;
+  //if we don't we even have a search, return early
+  if (!isset($_GET['gmuw_pf_search'])) {
+    return;
   }
+
+  //Build output
+    $content.="<div class='pf-search-results'>";
 
   //Display debug info
     if ($display_debug_info) {
@@ -210,12 +209,19 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
       $content.="</p></div>";
     }
 
-    //search results header
-    $content .= '<p class="pf-search-results-note">';
-    $content .= 'Your searched for &ldquo;<em>'.$search.'</em>&rdquo; in &ldquo;<em>'.$who.'</em>&rdquo;.';
-    $content .= '</p></div>';
+  //we have a search parameter, but it is empty
+  if (empty($_GET['gmuw_pf_search'])) {
+    $content .= '<p class="pf-search-results-note">No search term entered.</p>';
+    $content .= '</div>';
+    return $content;
+  }
 
-    //get users who match this search term
+  //search results header
+  $content .= '<p class="pf-search-results-note">';
+  $content .= 'Your searched for &ldquo;<em>'.$search.'</em>&rdquo; in &ldquo;<em>'.$who.'</em>&rdquo;.';
+  $content .= '</p>';
+
+  //get users who match this search term
 	$myusers = get_users(
 	    array(
 	        'role' => 'subscriber',
@@ -267,6 +273,9 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 		$content.='</p>';
 
   }
+
+  //finish output
+    $content.="</div>";
 
   //Return value
     return $content;
