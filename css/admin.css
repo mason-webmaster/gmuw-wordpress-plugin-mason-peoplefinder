@@ -40,11 +40,13 @@
 .pf-field-status-pending {
   background-color: goldenrod;
 }
-.pf_approve {
+.pf_approve,
+.pf_approve_all {
   background: green !important;
   border-color: green !important;
 }
-.pf_disapprove {
+.pf_disapprove,
+.pf_disapprove_all {
   background: tomato !important;
   border-color: tomato !important;
 }

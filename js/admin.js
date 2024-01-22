@@ -22,6 +22,16 @@ jQuery(document).ready(function(){
 //implement people finder customizations
 jQuery(document).ready(function(){
 
+  //establish click handler for people finder field approval all button
+  jQuery('.user-edit-php a.pf_approve_all').on('click', function(e) {
+    e.preventDefault();
+    //alert('You clicked the approve all button.');
+    jQuery('.user-edit-php a.pf_approve').each(function( index ) {
+      //console.log( index + ": " + jQuery( this ).text() );
+      jQuery(this).trigger('click');
+    });
+  });
+
   //establish click handler for people finder field approval buttons
   jQuery('.user-edit-php a.pf_approve').on('click', function(e) {
     e.preventDefault();
@@ -35,6 +45,16 @@ jQuery(document).ready(function(){
     jQuery('input#'+pf_field_name).css('color','green').css('font-weight','bold');
     //message about saving
     //alert('This field is marked for approval; now you must save.');
+  });
+
+  //establish click handler for people finder field disapproval all button
+  jQuery('.user-edit-php a.pf_disapprove_all').on('click', function(e) {
+    e.preventDefault();
+    alert('You clicked the disapprove all button.');
+    jQuery('.user-edit-php a.pf_disapprove').each(function( index ) {
+      //console.log( index + ": " + jQuery( this ).text() );
+      jQuery(this).trigger('click');
+    });
   });
 
   //establish click handler for people finder field disapprove buttons
