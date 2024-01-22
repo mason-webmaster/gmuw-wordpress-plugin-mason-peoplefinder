@@ -1,0 +1,69 @@
+/* search form styling */
+
+/* Default and small screens */
+
+
+
+/*pf-search-form*/
+.pf-search-form	input, 
+.pf-search-form	select, 
+.pf-search-form	button {
+	margin:0 1em;
+}
+
+/* Hide field labels on screen */
+@media screen {
+	.pf-search-form label {
+		display: none !important;
+	}
+}
+
+.pf-search-form-controls {
+	text-align: center;
+}
+
+.pf-search-form	input {
+	display:inline !important;
+	border-color:#E3E3E3;
+}
+
+.pf-search-form input::placeholder {
+	opacity: 1;
+}
+
+.pf-search-form .pf-search-controls > * {
+	/*width: 100%;*/
+	max-width: 30rem;
+	/*margin-left: auto;
+	margin-right: auto;
+	*/
+	margin-bottom: 0.5em;
+}
+
+.pf-search-form select {
+	padding: 1.5rem 1.8rem;
+	border-style: solid;
+	border-radius: 0;
+	border-width: 0.1rem;
+	font-size: 1.6rem;
+	background-color: white;
+}
+
+.pf-search-form button {
+	padding-top: 0.9em;
+	padding-bottom: 0.9em;
+	background-color: white !important;
+	outline: 1px solid #E3E3E3;
+	color: black !important;
+}
+
+.pf-search-form button:hover,
+.pf-search-form button:active,
+.pf-search-form button:focus {
+	text-decoration: none;
+}
+
+.pf-search-form button.submit {
+	background-color: #006633 !important;
+	color: white !important;
+}

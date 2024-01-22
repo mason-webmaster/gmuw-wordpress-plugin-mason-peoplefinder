@@ -99,7 +99,7 @@ function gmuw_pf_search_form($atts = [], $content = null, $tag = ''){
       $content.="</p></div>";
     }
 
-    $content.="<form name='event-filter-form'>";
+    $content.="<form name='pf-search-form'>";
 
     // Hidden fields
     //display mode
@@ -111,7 +111,11 @@ function gmuw_pf_search_form($atts = [], $content = null, $tag = ''){
     // Start search controls div
     $content.="<div class='pf-search-controls'>";
 
-    //calendars
+    //name search
+    $content.="<label for='input-gmuw_pf_search'>Name:</label>";
+    $content.="<input type='text' name='gmuw_pf_search' id='input-gmuw_pf_search' placeholder='Search...' value='".$search."' />";
+
+    //person type
     $content.="<label for='input-gmuw_pf_who'>Who:</label>";
     $content.="<select name='gmuw_pf_who' id='input-gmuw_pf_who'>";
     $content.="<option value='everyone'>Everyone</option>";
@@ -119,27 +123,11 @@ function gmuw_pf_search_form($atts = [], $content = null, $tag = ''){
     $content.="<option value='students'>Students Only</option>";
     $content.="</select>";
 
-    //name search
-    $content.="<label for='input-gmuw_pf_search'>Name:</label>";
-    $content.="<input type='text' name='gmuw_pf_search' id='input-gmuw_pf_search' placeholder='SEARCH' value='".$search."' />";
-
     //submit button
     $content.='<button type="submit" class="submit">Search</button>';
 
     // End search controls div
     $content.="</div>";
-
-    /*
-    // Start view controls div
-    $content.="<div class='view-controls'>";
-
-    //view type buttons (include class of active if appropriate based on calendar display mode)
-    $content.="<button class='view-selector".($display_mode=='grid' ? ' active' : '')."' id='grid-view'>GRID VIEW</button>";
-    $content.="<button class='view-selector".($display_mode=='list' ? ' active' : '')."' id='list-view'>LIST VIEW</button>";
-
-    // End view controls div
-    $content.="</div>";
-	*/
 
     // End form controls div
     $content.="</div>";
@@ -156,7 +144,7 @@ function gmuw_pf_search_form($atts = [], $content = null, $tag = ''){
 
 function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 
-  //Returns search form
+  //Returns search results
 
   //Get global variables
     global $wpdb;
@@ -206,6 +194,12 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
   //Build output
     $content.="<div class='pf-results'>";
 
+  //do we even have a search?
+  if (!isset($_GET['gmuw_pf_search']) || empty($_GET['gmuw_pf_search'])) {
+    $content .= '<p class="pf-search-results-note">No search term entered.</p></div>';
+    return $content;
+  }
+
   //Display debug info
     if ($display_debug_info) {
       $content.="<div class='gmuw-pf-debug-info'><p>";
@@ -217,10 +211,9 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
     }
 
     //search results header
-    //search term
-    $content.="<p>Search: ".$search."</p>";
-    //who
-    $content.="<p>Who: ".$who."</p>";
+    $content .= '<p class="pf-search-results-note">';
+    $content .= 'Your searched for &ldquo;<em>'.$search.'</em>&rdquo; in &ldquo;<em>'.$who.'</em>&rdquo;.';
+    $content .= '</p></div>';
 
     //get users who match this search term
 	$myusers = get_users(
@@ -240,14 +233,40 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 
 	//loop through users
 	foreach ($myusers as $myuser) {
-		$content.='<p>';
-		$content.='ID: ' . $myuser->ID . '<br />';
-		$content.='Name: ' . $myuser->pf_name . '<br />';
-		$content.='Title: ' . $myuser->pf_title . '<br />';
-		$content.='Phone: ' . $myuser->pf_phone . '<br />';
-		$content.='Fax: ' . $myuser->pf_fax . '<br />';
+
+    $content.='<p>';
+
+		//$content.='ID: ' . $myuser->ID . '<br />';
+
+    $content.='<span class="pf-search-results-name">' . $myuser->pf_name . '</span><br />';
+
+    if (!empty($myuser->pf_title_approved)) {
+      $content.=$myuser->pf_title_approved . '<br />';
+    }
+
+    if (!empty($myuser->pf_affiliation)) {
+      $content.=$myuser->pf_affiliation . '<br />';
+    }
+
+    if (!empty($myuser->pf_phone_approved)) {
+        $content.='Phone: ' . $myuser->pf_phone_approved . '<br />';
+    }
+
+    if (!empty($myuser->pf_fax_approved)) {
+      $content.='Fax: ' . $myuser->pf_fax_approved . '<br />';
+    }
+
+    if (!empty($myuser->pf_email_approved)) {
+      $content.='Email: <a href="mailto:'.$myuser->pf_email_approved.'@gmu.edu">' . $myuser->pf_email_approved . '@gmu.edu</a><br />';
+    }
+
+    if (!empty($myuser->pf_pronouns_approved)) {
+      $content.='Pronouns: ' . $myuser->pf_pronouns_approved . '<br />';
+    }
+
 		$content.='</p>';
-	}
+
+  }
 
   //Return value
     return $content;

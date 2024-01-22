@@ -1,0 +1,14 @@
+/* search results styling */
+
+/* Default and small screens */
+
+
+.pf-search-results-note {
+	text-align: center;
+	font-weight: bold;
+}
+
+.pf-search-results-name {
+	font-size: 1.1em;
+	font-weight:bold;
+}
