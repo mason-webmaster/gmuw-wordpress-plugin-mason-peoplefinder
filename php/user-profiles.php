@@ -121,9 +121,14 @@ function gmuw_pf_custom_fields_array() {
     $pf_fields = array(
         array('pf_name', 'Name', 'Please enter your name as you would like it to appear.'),
         array('pf_title', 'Title', 'Please enter your title.'),
-        array('pf_pronouns', 'Pronouns', 'Your preferred pronouns.'),
+        array('pf_affiliation', 'Affiliation', 'Please enter your professional affiliation.'),
+        array('pf_building', 'Building', 'Your building.'),
+        array('pf_room', 'Room', 'Your room number.'),
+        array('pf_mailstop', 'Mailstop', 'Your mailstop number (MSN).'),
         array('pf_phone', 'Phone Number', 'Your phone number.'),
         array('pf_fax', 'Fax Number', 'Your fax number.'),
+        array('pf_email', 'Email Address/NetID', 'Just the part before the gmu.edu, please.'),
+        array('pf_pronouns', 'Pronouns', 'Your preferred pronouns.'),
     );
 
     //return value
@@ -254,6 +259,10 @@ function gmuw_pf_save_extra_user_profile_fields( $user_id ) {
         
         //set array of fields not to include in search key
         $exclude_from_search_key=array(
+            'pf_affiliation',
+            'pf_building',
+            'pf_room',
+            'pf_mailstop',
             'pf_pronouns',
         );
         
