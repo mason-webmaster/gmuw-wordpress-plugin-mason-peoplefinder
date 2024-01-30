@@ -4,13 +4,6 @@
 
 
 
-/*pf-search-form*/
-.pf-search-form	input, 
-.pf-search-form	select, 
-.pf-search-form	button {
-	margin:0 1em;
-}
-
 /* Hide field labels on screen */
 @media screen {
 	.pf-search-form label {
@@ -18,8 +11,8 @@
 	}
 }
 
-.pf-search-form-controls {
-	text-align: center;
+.pf-search-form button {
+	display:block;
 }
 
 .pf-search-form	input {

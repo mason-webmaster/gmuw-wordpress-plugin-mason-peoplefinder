@@ -4,11 +4,17 @@
 
 
 .pf-search-results-note {
-	text-align: center;
 	font-weight: bold;
+	background-color: #fff7d9;
 }
 
 .pf-search-results-name {
 	font-size: 1.1em;
 	font-weight:bold;
+}
+
+.pf-search-results {
+	padding-bottom: 2em;
+	border-bottom: 3px double black;
+	margin-bottom:5em;
 }

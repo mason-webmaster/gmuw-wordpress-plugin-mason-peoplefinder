@@ -217,6 +217,8 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
   }
 
   //search results header
+  $content .= '<h3>Results</h3>';
+
   $content .= '<p class="pf-search-results-note">';
   $content .= 'Your searched for &ldquo;<em>'.$search.'</em>&rdquo; in &ldquo;<em>'.$who.'</em>&rdquo;.';
   $content .= '</p>';
@@ -275,9 +277,9 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
   }
 
   //finish output
-    $content.="</div>";
+  $content.="</div>";
 
   //Return value
-    return $content;
+  return $content;
 
 }
