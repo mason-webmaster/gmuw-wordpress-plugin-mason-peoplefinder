@@ -146,9 +146,12 @@ function gmuw_pf_extra_user_profile_fields($user) {
 
     echo '<table class="form-table">';
     
-    echo '<a class="pf_approve_all button-primary" href="#">Approve All &#10003;</a>';
-    echo '&nbsp;';
-    echo '<a class="pf_disapprove_all button-primary" href="#">&#10006; Disapprove All</a>';
+    //show approve/disapprove all fields if user is an admin
+    if (current_user_can('manage_options')) {
+        echo '<a class="pf_approve_all button-primary" href="#">Approve All &#10003;</a>';
+        echo '&nbsp;';
+        echo '<a class="pf_disapprove_all button-primary" href="#">&#10006; Disapprove All</a>';
+    }
 
     //set list of fields and data
     $pf_fields = gmuw_pf_custom_fields_array();
