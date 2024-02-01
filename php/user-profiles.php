@@ -207,12 +207,12 @@ function gmuw_pf_user_profile_people_finder_field($user,$field_name, $field_titl
             $return_value.='<a class="pf_disapprove button-primary" data-pf-field="'.$field_name.'" href="#">&#10006; Disapprove</a>';
             $return_value.='</p>';
         } else {
-            $return_value.='<p>';
             if (!empty(get_user_meta( $user->ID, $field_name, true ))) {
-                $return_value.='<span class="pf-field-status pf-field-status-pending">Not approved</span>';
+                $return_value.='<p>';
+                $return_value.='<span class="pf-field-status pf-field-status-pending" title="Current value: '. get_user_meta( $user->ID, $field_name.'_approved', true ) .'"">Not approved</span>';
                 $return_value.='<a class="pf_approve button-primary" data-pf-field="'.$field_name.'" href="#">Mark for Approval &#10003;</a>';
+                $return_value.='</p>';
             }
-            $return_value.='</p>';
         }       
     }    
 
