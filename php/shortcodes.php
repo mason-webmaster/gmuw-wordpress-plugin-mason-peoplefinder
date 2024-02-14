@@ -223,6 +223,8 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
   $content .= 'Your searched for &ldquo;<em>'.$search.'</em>&rdquo; in &ldquo;<em>'.$who.'</em>&rdquo;.';
   $content .= '</p>';
 
+  $content .= '<h4>Faculty/Staff</h4>';
+
   //get users who match this search term
 	$myusers = get_users(
 	    array(
@@ -273,6 +275,47 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
     }
 
 		$content.='</p>';
+
+  }
+
+  $content .= '<h4>Students</h4>';
+
+  //get globals
+  global $wpdb;
+
+  //set student table name
+  $student_table_name = $wpdb->prefix . 'gmuw_pf_students';
+
+  //get student results
+  $student_results = $wpdb->get_results( $wpdb->prepare("SELECT * FROM ".$student_table_name." WHERE student_name LIKE '%".$search."%' ORDER BY student_name;" ) );
+
+  //do we have student reults?
+  if ( $student_results ) {
+
+    //loop through student results
+    foreach($student_results as $student_result){
+
+      $content.='<p>';
+
+      $content.='<span class="pf-search-results-name">' . $student_result->student_name . '</span><br />';
+
+      if (!empty($student_result->student_major)) {
+        $content.='Major: '.$student_result->student_major . '<br />';
+      }
+
+      /*
+      if (!empty($student_result->student_phone_number)) {
+        $content.=$student_result->student_phone_number . '<br />';
+      }
+      */
+
+      if (!empty($student_result->student_pronouns)) {
+        $content.='Pronouns: '.$student_result->student_pronouns . '<br />';
+      }
+
+      $content.='</p>';
+
+    }
 
   }
 
