@@ -60,3 +60,22 @@ function gmuw_pf_add_sublevel_menu() {
 	);
 	
 }
+
+/**
+ * Adds link to plugin import students page to Wordpress admin menu as a sub-menu item under Mason
+ */
+add_action('admin_menu', 'gmuw_pf_add_sublevel_menu_item_import_students');
+function gmuw_pf_add_sublevel_menu_item_import_students() {
+
+	// Add Wordpress admin menu item under Mason for this plugin's settings
+	add_submenu_page(
+		'gmuw',
+		'People Finder: Import Students',
+		'Import Students',
+		'manage_options',
+		'gmuw_pf_import_students',
+		'gmuw_pf_display_page_import_students',
+		3
+	);
+
+}

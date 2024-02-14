@@ -62,6 +62,9 @@ require('php/user-profiles.php');
 // shortcodes
 require('php/shortcodes.php');
 
+// student import
+require('php/student-import.php');
+
 //Register activation hook
 register_activation_hook(
 	__FILE__,
