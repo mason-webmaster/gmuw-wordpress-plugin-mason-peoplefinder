@@ -36,6 +36,20 @@ function gmuw_pf_display_page_import_students() {
 		// Get globals
 		global $wpdb;
 
+		//should we delete queued records?
+		if ($_POST['submit']=='delete') {
+
+		  // Set table name, using the database prefix
+		  $table_name = $wpdb->prefix . "gmuw_pf_students_new";
+
+		  //delete records
+		  $delete = $wpdb->query("TRUNCATE TABLE $table_name");
+
+		  //output
+		  if ($delete) { echo '<p>Queued records deleted.</p>'; }
+
+		}
+
 		//should we queue?
 		if ($_POST['submit']=='queue' || $_POST['submit']=='queue+import') {
 
@@ -188,6 +202,7 @@ function gmuw_pf_display_page_import_students() {
 	}
 	if ($number_of_students_queued>0) {
 		echo '<p><button name="submit" type="submit" value="queue" />Queue More Students</button></p>';
+		echo '<p><button name="submit" type="submit" value="delete" onclick="return confirm(\'Do you want to clear queued records?\');" />Delete Queued Students</button></p>';
 	}
 
 	echo '</form>';
