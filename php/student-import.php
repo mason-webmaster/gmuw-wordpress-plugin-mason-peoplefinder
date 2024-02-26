@@ -51,7 +51,7 @@ function gmuw_pf_display_page_import_students() {
 		}
 
 		//should we queue?
-		if ($_POST['submit']=='queue' || $_POST['submit']=='queue+import') {
+		if ($_POST['submit']=='queue') {
 
 			// get parameters
 			if (isset($_POST['gmuw_attachment_post_id'])) { $gmuw_attachment_post_id=(int)$_POST['gmuw_attachment_post_id']; }
@@ -114,7 +114,7 @@ function gmuw_pf_display_page_import_students() {
 		}
 
 		//should we import?
-		if ($_POST['submit']=='import' || ($_POST['submit']=='queue+import') && !empty($gmuw_attachment_post_id)) {
+		if ($_POST['submit']=='import') {
 
 			//juggle tables
 
@@ -198,7 +198,6 @@ function gmuw_pf_display_page_import_students() {
 	//display processing options
 	if ($number_of_students_queued==0) {
 		echo '<p><button name="submit" type="submit" value="queue" />Queue Student Records for Import</button></p>';
-		echo '<p><button name="submit" type="submit" value="queue+import" />Queue and Import</button></p>';
 	}
 	if ($number_of_students_queued>0) {
 		echo '<p><button name="submit" type="submit" value="queue" />Queue More Students</button></p>';
