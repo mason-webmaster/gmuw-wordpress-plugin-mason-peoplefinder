@@ -65,6 +65,9 @@ require('php/shortcodes.php');
 // student import
 require('php/student-import.php');
 
+// taxonomies
+require('php/taxonomies.php');
+
 //Register activation hook
 register_activation_hook(
 	__FILE__,
