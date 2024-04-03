@@ -80,9 +80,9 @@ function gmuw_pf_display_page_import_students() {
 				    echo $index+1 . ': ' . $line;
 				    $student_name = trim(substr($line,0,45));
 				    //echo "<p>Student Name: $student_name</p>";
-				    $student_major = trim(substr($line,45,8));
+				    $student_major = trim(substr($line,45,4));
 				    //echo "<p>Student major: $student_major</p>";
-				    $student_phone = trim(substr($line,53,33));
+				    $student_phone = trim(substr($line,53,12));
 				    //echo "<p>Student phone: $student_phone</p>";
 				    $student_pronouns = trim(substr($line,86));
 				    //echo "<p>Student pronouns: $student_pronouns</p>";
