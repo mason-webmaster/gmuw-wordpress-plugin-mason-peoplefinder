@@ -50,6 +50,7 @@ function gmuw_pf_create_custom_table_students($table_name_suffix=''){
      student_name nvarchar(255) DEFAULT NULL,
      student_major nvarchar(255) DEFAULT NULL,
      student_phone_number nvarchar(255) DEFAULT NULL,
+     student_email nvarchar(255) DEFAULT NULL,
      student_pronouns nvarchar(255) DEFAULT NULL,
      when_created datetime NOT NULL,
      when_modified datetime NOT NULL,

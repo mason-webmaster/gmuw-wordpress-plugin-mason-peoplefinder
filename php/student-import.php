@@ -84,6 +84,8 @@ function gmuw_pf_display_page_import_students() {
 				    //echo "<p>Student major: $student_major</p>";
 				    $student_phone = trim(substr($line,53,12));
 				    //echo "<p>Student phone: $student_phone</p>";
+				    $student_email = trim(substr($line,78,8));
+				    //echo "<p>Student email: $student_email</p>";
 				    $student_pronouns = trim(substr($line,86));
 				    //echo "<p>Student pronouns: $student_pronouns</p>";
 
@@ -95,6 +97,7 @@ function gmuw_pf_display_page_import_students() {
 							'student_name' => $student_name,
 							'student_major' => $student_major,
 							'student_phone_number' => $student_phone,
+							'student_email' => $student_email,
 							'student_pronouns' => $student_pronouns,
 							'when_created' => $import_time_mysql_format,
 							'when_modified' => $import_time_mysql_format,
