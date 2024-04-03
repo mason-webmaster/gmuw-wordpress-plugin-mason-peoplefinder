@@ -299,6 +299,10 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 
       $content.='<span class="pf-search-results-name">' . $student_result->student_name . '</span><br />';
 
+      if (!empty($student_result->student_email)) {
+        $content.='Email: <a href="mailto:'.$student_result->student_email.'@gmu.edu">'.$student_result->student_email . '@gmu.edu</a><br />';
+      }
+
       if (!empty($student_result->student_major)) {
         $content.='Major: '.$student_result->student_major . '<br />';
       }
