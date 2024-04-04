@@ -276,6 +276,14 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
         $content.=$myuser->pf_affiliation_approved . '<br />';
       }
 
+      if (!empty($myuser->pf_title_2_approved)) {
+        $content.=$myuser->pf_title_2_approved . '<br />';
+      }
+
+      if (!empty($myuser->pf_affiliation_2_approved)) {
+        $content.=$myuser->pf_affiliation_2_approved . '<br />';
+      }
+
       if (!empty($myuser->pf_phone_approved)) {
           $content.='Phone: ' . $myuser->pf_phone_approved . '<br />';
       }

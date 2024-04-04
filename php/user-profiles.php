@@ -119,16 +119,29 @@ function gmuw_pf_custom_fields_array() {
 
     //set up array
     $pf_fields = array(
-        array('pf_name', 'Name', 'Please enter your name as you would like it to appear.'),
-        array('pf_title', 'Title', 'Please enter your title.'),
-        array('pf_affiliation', 'Affiliation', 'Please enter your professional affiliation.'),
-        array('pf_building', 'Building', 'Your building.'),
-        array('pf_room', 'Room', 'Your room number.'),
-        array('pf_mailstop', 'Mailstop', 'Your mailstop number (MSN).'),
-        array('pf_phone', 'Phone Number', 'Your phone number.'),
-        array('pf_fax', 'Fax Number', 'Your fax number.'),
-        array('pf_email', 'Email Address/NetID', 'Just the part before the gmu.edu, please.'),
-        array('pf_pronouns', 'Pronouns', 'Your preferred pronouns.'),
+        array('heading','', 'Personal Information', ''),
+        array('text','pf_name', 'Name', 'Please enter your name as you would like it to appear.'),
+        array('text','pf_pronouns', 'Pronouns', 'Your preferred pronouns.'),
+
+        array('heading','', 'Contact Information', ''),
+        array('text','pf_phone', 'Phone Number', 'Your phone number.'),
+        array('text','pf_fax', 'Fax Number', 'Your fax number.'),
+        array('text','pf_email', 'Email Address/NetID', 'Just the part before the gmu.edu, please.'),
+
+        array('heading','', 'Please enter information about your first role.', ''),
+        array('text','pf_title', 'Title 1', 'Please enter your title.'),
+        array('text','pf_affiliation', 'Affiliation 1', 'Please enter your professional affiliation.'),
+        array('text','pf_building', 'Building 1', 'Your building.'),
+        array('text','pf_room', 'Room 1', 'Your room number.'),
+        array('text','pf_mailstop', 'Mailstop 1', 'Your mailstop number (MSN).'),
+
+        array('heading','', 'Please enter information about your second role.', ''),
+        array('text','pf_title_2', 'Title 2', 'Please enter your title.'),
+        array('text','pf_affiliation_2', 'Affiliation 2', 'Please enter your professional affiliation.'),
+        array('text','pf_building_2', 'Building 2', 'Your building.'),
+        array('text','pf_room_2', 'Room 2', 'Your room number.'),
+        array('text','pf_mailstop_2', 'Mailstop 2', 'Your mailstop number (MSN).'),
+
     );
 
     //return value
@@ -158,7 +171,12 @@ function gmuw_pf_extra_user_profile_fields($user) {
 
     //output fields
     foreach ($pf_fields as $pf_field) {
-        echo gmuw_pf_user_profile_people_finder_field($user,$pf_field[0], $pf_field[1], $pf_field[2]);
+        if ($pf_field[0]=='text') {
+            echo gmuw_pf_user_profile_people_finder_field($user,$pf_field[1], $pf_field[2], $pf_field[3]);
+        }
+        if ($pf_field[0]=='heading') {
+            echo '<tr><th colspan="2"><h4>'.$pf_field[2].' '.$pf_field[3].'</h4></th></tr>';
+        }
     }
 
     echo '</table>';
@@ -250,7 +268,9 @@ function gmuw_pf_save_extra_user_profile_fields( $user_id ) {
 
     //save fields
     foreach ($pf_fields as $pf_field) {
-        gmuw_pf_save_extra_user_profile_field($user_id, $pf_field[0]);
+        if ($pf_field[0]=='text') {
+            gmuw_pf_save_extra_user_profile_field($user_id, $pf_field[1]);
+        }
     }
 
     //handle search key field
@@ -266,15 +286,19 @@ function gmuw_pf_save_extra_user_profile_fields( $user_id ) {
             'pf_building',
             'pf_room',
             'pf_mailstop',
+            'pf_affiliation_2',
+            'pf_building_2',
+            'pf_room_2',
+            'pf_mailstop_2',
             'pf_pronouns',
         );
         
         //generate search key field
         foreach ($pf_fields as $pf_field) {
             //should we include this field in the search key?
-            if (!in_array($pf_field[0],$exclude_from_search_key)) {
+            if (!in_array($pf_field[1],$exclude_from_search_key)) {
                 //add approved field value
-                $search_key_value .= $_POST[$pf_field[0].'_approved'] . ' ';    
+                $search_key_value .= $_POST[$pf_field[1].'_approved'] . ' ';
             }
         }
         
