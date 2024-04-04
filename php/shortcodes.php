@@ -118,9 +118,9 @@ function gmuw_pf_search_form($atts = [], $content = null, $tag = ''){
     //person type
     $content.="<label for='input-gmuw_pf_who'>Who:</label>";
     $content.="<select name='gmuw_pf_who' id='input-gmuw_pf_who'>";
-    $content.="<option value='everyone'>Everyone</option>";
-    $content.="<option value='facstaff'>Faculty/Staff/Affiliates</option>";
-    $content.="<option value='students'>Students Only</option>";
+    $content.="<option value='everyone'".($who=='everyone'?' selected':'').">Everyone</option>";
+    $content.="<option value='facstaff'".($who=='facstaff'?' selected':'').">Faculty/Staff/Affiliates</option>";
+    $content.="<option value='students'".($who=='students'?' selected':'').">Students Only</option>";
     $content.="</select>";
 
     //submit button
@@ -223,107 +223,115 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
   $content .= 'Your searched for &ldquo;<em>'.$search.'</em>&rdquo; in &ldquo;<em>'.$who.'</em>&rdquo;.';
   $content .= '</p>';
 
-  $content .= '<h4>Faculty/Staff</h4>';
+  //should we show faculty results?
+  if ($who=='everyone' || $who=='facstaff') {
 
-  //get users who match this search term
-	$myusers = get_users(
-	    array(
-	        'role' => 'subscriber',
+    $content .= '<h4>Faculty/Staff</h4>';
 
-			'meta_query' => array(
-			    array(
-			        'key' => 'pf_search_key',
-			        'value' => $search,
-			        'compare' => 'LIKE'
-			    )
-			)
-	        
-	    )
-	);
+    //get users who match this search term
+    $myusers = get_users(
+      array(
+        'role' => 'subscriber',
+        'meta_query' => array(
+          array(
+            'key' => 'pf_search_key',
+            'value' => $search,
+            'compare' => 'LIKE'
+          )
+        )
+      )
+    );
 
-	//loop through users
-	foreach ($myusers as $myuser) {
-
-    $content.='<p>';
-
-		//$content.='ID: ' . $myuser->ID . '<br />';
-
-    $content.='<span class="pf-search-results-name">' . $myuser->pf_name . '</span><br />';
-
-    if (!empty($myuser->pf_title_approved)) {
-      $content.=$myuser->pf_title_approved . '<br />';
-    }
-
-    if (!empty($myuser->pf_affiliation)) {
-      $content.=$myuser->pf_affiliation . '<br />';
-    }
-
-    if (!empty($myuser->pf_phone_approved)) {
-        $content.='Phone: ' . $myuser->pf_phone_approved . '<br />';
-    }
-
-    if (!empty($myuser->pf_fax_approved)) {
-      $content.='Fax: ' . $myuser->pf_fax_approved . '<br />';
-    }
-
-    // if we are in the Mason IP range, show the email address
-    if (gmuw_pf_ip_in_mason_range($_SERVER['REMOTE_ADDR'])) {
-      if (!empty($myuser->pf_email_approved)) {
-        $content.='Email: <a href="mailto:'.$myuser->pf_email_approved.'@gmu.edu">' . $myuser->pf_email_approved . '@gmu.edu</a><br />';
-      }
-    }
-
-    if (!empty($myuser->pf_pronouns_approved)) {
-      $content.='Pronouns: ' . $myuser->pf_pronouns_approved . '<br />';
-    }
-
-		$content.='</p>';
-
-  }
-
-  $content .= '<h4>Students</h4>';
-
-  //get globals
-  global $wpdb;
-
-  //set student table name
-  $student_table_name = $wpdb->prefix . 'gmuw_pf_students';
-
-  //get student results
-  $student_results = $wpdb->get_results( $wpdb->prepare("SELECT * FROM ".$student_table_name." WHERE student_name LIKE '%".$search."%' ORDER BY student_name;" ) );
-
-  //do we have student reults?
-  if ( $student_results ) {
-
-    //loop through student results
-    foreach($student_results as $student_result){
+    //loop through users
+    foreach ($myusers as $myuser) {
 
       $content.='<p>';
 
-      $content.='<span class="pf-search-results-name">' . $student_result->student_name . '</span><br />';
+      //$content.='ID: ' . $myuser->ID . '<br />';
+
+      $content.='<span class="pf-search-results-name">' . $myuser->pf_name . '</span><br />';
+
+      if (!empty($myuser->pf_title_approved)) {
+        $content.=$myuser->pf_title_approved . '<br />';
+      }
+
+      if (!empty($myuser->pf_affiliation)) {
+        $content.=$myuser->pf_affiliation . '<br />';
+      }
+
+      if (!empty($myuser->pf_phone_approved)) {
+          $content.='Phone: ' . $myuser->pf_phone_approved . '<br />';
+      }
+
+      if (!empty($myuser->pf_fax_approved)) {
+        $content.='Fax: ' . $myuser->pf_fax_approved . '<br />';
+      }
 
       // if we are in the Mason IP range, show the email address
       if (gmuw_pf_ip_in_mason_range($_SERVER['REMOTE_ADDR'])) {
-        if (!empty($student_result->student_email)) {
-          $content.='Email: <a href="mailto:'.$student_result->student_email.'@gmu.edu">'.$student_result->student_email . '@gmu.edu</a><br />';
+        if (!empty($myuser->pf_email_approved)) {
+          $content.='Email: <a href="mailto:'.$myuser->pf_email_approved.'@gmu.edu">' . $myuser->pf_email_approved . '@gmu.edu</a><br />';
         }
       }
 
-      if (!empty($student_result->student_major)) {
-        $content.='Major: '.$student_result->student_major . '<br />';
-      }
-
-      /*
-      if (!empty($student_result->student_phone_number)) {
-        $content.=$student_result->student_phone_number . '<br />';
-      }
-      */
-
-      if (!empty($student_result->student_pronouns)) {
-        $content.='Pronouns: '.$student_result->student_pronouns . '<br />';
+      if (!empty($myuser->pf_pronouns_approved)) {
+        $content.='Pronouns: ' . $myuser->pf_pronouns_approved . '<br />';
       }
 
       $content.='</p>';
+
+    }
+
+  }
+
+  //should we show student results?
+  if ($who=='everyone' || $who=='students') {
+
+    $content .= '<h4>Students</h4>';
+
+    //get globals
+    global $wpdb;
+
+    //set student table name
+    $student_table_name = $wpdb->prefix . 'gmuw_pf_students';
+
+    //get student results
+    $student_results = $wpdb->get_results( $wpdb->prepare("SELECT * FROM ".$student_table_name." WHERE student_name LIKE '%".$search."%' ORDER BY student_name;" ) );
+
+    //do we have student reults?
+    if ( $student_results ) {
+
+      //loop through student results
+      foreach($student_results as $student_result){
+
+        $content.='<p>';
+
+        $content.='<span class="pf-search-results-name">' . $student_result->student_name . '</span><br />';
+
+        // if we are in the Mason IP range, show the email address
+        if (gmuw_pf_ip_in_mason_range($_SERVER['REMOTE_ADDR'])) {
+          if (!empty($student_result->student_email)) {
+            $content.='Email: <a href="mailto:'.$student_result->student_email.'@gmu.edu">'.$student_result->student_email . '@gmu.edu</a><br />';
+          }
+        }
+
+        if (!empty($student_result->student_major)) {
+          $content.='Major: '.$student_result->student_major . '<br />';
+        }
+
+        /*
+        if (!empty($student_result->student_phone_number)) {
+          $content.=$student_result->student_phone_number . '<br />';
+        }
+        */
+
+        if (!empty($student_result->student_pronouns)) {
+          $content.='Pronouns: '.$student_result->student_pronouns . '<br />';
+        }
+
+        $content.='</p>';
+
+      }
 
     }
 
