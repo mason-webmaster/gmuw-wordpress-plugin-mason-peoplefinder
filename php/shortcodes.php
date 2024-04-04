@@ -276,12 +276,40 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
         $content.=$myuser->pf_affiliation_approved . '<br />';
       }
 
+      //location
+      if (!empty($myuser->pf_room_approved) || !empty($myuser->pf_building_approved) || !empty($myuser->pf_mailstop_approved)) {
+        if (!empty($myuser->pf_room_approved)) {
+          $content.=$myuser->pf_room_approved . ' ';
+        }
+        if (!empty($myuser->pf_building_approved)) {
+          $content.=$myuser->pf_building_approved;
+        }
+        if (!empty($myuser->pf_mailstop_approved)) {
+          $content.=', MSN:'.$myuser->pf_mailstop_approved;
+        }
+        $content.='<br />';
+      }
+
       if (!empty($myuser->pf_title_2_approved)) {
         $content.=$myuser->pf_title_2_approved . '<br />';
       }
 
       if (!empty($myuser->pf_affiliation_2_approved)) {
         $content.=$myuser->pf_affiliation_2_approved . '<br />';
+      }
+
+      //location2
+      if (!empty($myuser->pf_room_2_approved) || !empty($myuser->pf_building_2_approved) || !empty($myuser->pf_mailstop_2_approved)) {
+        if (!empty($myuser->pf_room_2_approved)) {
+          $content.=$myuser->pf_room_2_approved . ' ';
+        }
+        if (!empty($myuser->pf_building_2_approved)) {
+          $content.=$myuser->pf_building_2_approved;
+        }
+        if (!empty($myuser->pf_mailstop_2_approved)) {
+          $content.=', MSN:'.$myuser->pf_mailstop_2_approved;
+        }
+        $content.='<br />';
       }
 
       if (!empty($myuser->pf_phone_approved)) {
