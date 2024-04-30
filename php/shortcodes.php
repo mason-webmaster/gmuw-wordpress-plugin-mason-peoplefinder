@@ -289,12 +289,13 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
           $content.=get_term_by('id', $myuser->pf_building_approved, 'building')->name;
         }
         if (!empty($myuser->pf_mailstop_approved)) {
-          $content.=', MSN:'.$myuser->pf_mailstop_approved;
+          $content.=', MSN '.$myuser->pf_mailstop_approved;
         }
         $content.='<br />';
       }
 
       if (!empty($myuser->pf_title_2_approved)) {
+        $content.='<br />';
         $content.=$myuser->pf_title_2_approved . '<br />';
       }
 
@@ -315,7 +316,7 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
           $content.=get_term_by('id', $myuser->pf_building_2_approved, 'building')->name;
         }
         if (!empty($myuser->pf_mailstop_2_approved)) {
-          $content.=', MSN:'.$myuser->pf_mailstop_2_approved;
+          $content.=', MSN '.$myuser->pf_mailstop_2_approved;
         }
         $content.='<br />';
       }
