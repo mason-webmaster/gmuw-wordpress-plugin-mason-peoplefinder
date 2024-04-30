@@ -272,8 +272,12 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
         $content.=$myuser->pf_title_approved . '<br />';
       }
 
+      if (!empty($myuser->pf_department_approved)) {
+        $content.=get_term_by('id', $myuser->pf_department_approved, 'department')->name . '<br />';
+      }
+
       if (!empty($myuser->pf_affiliation_approved)) {
-        $content.=$myuser->pf_affiliation_approved . '<br />';
+        $content.=get_term_by('id', $myuser->pf_affiliation_approved, 'department')->name . '<br />';
       }
 
       //location
@@ -282,7 +286,7 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
           $content.=$myuser->pf_room_approved . ' ';
         }
         if (!empty($myuser->pf_building_approved)) {
-          $content.=$myuser->pf_building_approved;
+          $content.=get_term_by('id', $myuser->pf_building_approved, 'building')->name;
         }
         if (!empty($myuser->pf_mailstop_approved)) {
           $content.=', MSN:'.$myuser->pf_mailstop_approved;
@@ -294,8 +298,12 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
         $content.=$myuser->pf_title_2_approved . '<br />';
       }
 
+      if (!empty($myuser->pf_department_2_approved)) {
+        $content.=get_term_by('id', $myuser->pf_department_2_approved, 'department')->name . '<br />';
+      }
+
       if (!empty($myuser->pf_affiliation_2_approved)) {
-        $content.=$myuser->pf_affiliation_2_approved . '<br />';
+        $content.=get_term_by('id', $myuser->pf_affiliation_2_approved, 'department')->name . '<br />';
       }
 
       //location2
@@ -304,7 +312,7 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
           $content.=$myuser->pf_room_2_approved . ' ';
         }
         if (!empty($myuser->pf_building_2_approved)) {
-          $content.=$myuser->pf_building_2_approved;
+          $content.=get_term_by('id', $myuser->pf_building_2_approved, 'building')->name;
         }
         if (!empty($myuser->pf_mailstop_2_approved)) {
           $content.=', MSN:'.$myuser->pf_mailstop_2_approved;
