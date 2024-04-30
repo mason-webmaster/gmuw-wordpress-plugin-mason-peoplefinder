@@ -130,6 +130,7 @@ function gmuw_pf_custom_fields_array() {
 
         array('heading','', 'Please enter information about your first role.', ''),
         array('text','pf_title', 'Title 1', 'Please enter your title.'),
+        array('department','pf_department', 'Department 1', 'Please enter your department.'),
         array('department','pf_affiliation', 'Affiliation 1', 'Please enter your professional affiliation.'),
         array('building','pf_building', 'Building 1', 'Your building.'),
         array('text','pf_room', 'Room 1', 'Your room number.'),
@@ -137,6 +138,7 @@ function gmuw_pf_custom_fields_array() {
 
         array('heading','', 'Please enter information about your second role.', ''),
         array('text','pf_title_2', 'Title 2', 'Please enter your title.'),
+        array('department','pf_department_2', 'Department 2', 'Please enter your department.'),
         array('department','pf_affiliation_2', 'Affiliation 2', 'Please enter your professional affiliation.'),
         array('building','pf_building_2', 'Building 2', 'Your building.'),
         array('text','pf_room_2', 'Room 2', 'Your room number.'),
