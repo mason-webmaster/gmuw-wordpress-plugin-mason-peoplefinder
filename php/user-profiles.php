@@ -130,15 +130,15 @@ function gmuw_pf_custom_fields_array() {
 
         array('heading','', 'Please enter information about your first role.', ''),
         array('text','pf_title', 'Title 1', 'Please enter your title.'),
-        array('text','pf_affiliation', 'Affiliation 1', 'Please enter your professional affiliation.'),
-        array('text','pf_building', 'Building 1', 'Your building.'),
+        array('department','pf_affiliation', 'Affiliation 1', 'Please enter your professional affiliation.'),
+        array('building','pf_building', 'Building 1', 'Your building.'),
         array('text','pf_room', 'Room 1', 'Your room number.'),
         array('text','pf_mailstop', 'Mailstop 1', 'Your mailstop number (MSN).'),
 
         array('heading','', 'Please enter information about your second role.', ''),
         array('text','pf_title_2', 'Title 2', 'Please enter your title.'),
-        array('text','pf_affiliation_2', 'Affiliation 2', 'Please enter your professional affiliation.'),
-        array('text','pf_building_2', 'Building 2', 'Your building.'),
+        array('department','pf_affiliation_2', 'Affiliation 2', 'Please enter your professional affiliation.'),
+        array('building','pf_building_2', 'Building 2', 'Your building.'),
         array('text','pf_room_2', 'Room 2', 'Your room number.'),
         array('text','pf_mailstop_2', 'Mailstop 2', 'Your mailstop number (MSN).'),
 
@@ -171,11 +171,10 @@ function gmuw_pf_extra_user_profile_fields($user) {
 
     //output fields
     foreach ($pf_fields as $pf_field) {
-        if ($pf_field[0]=='text') {
-            echo gmuw_pf_user_profile_people_finder_field($user,$pf_field[1], $pf_field[2], $pf_field[3]);
-        }
         if ($pf_field[0]=='heading') {
             echo '<tr><th colspan="2"><h4>'.$pf_field[2].' '.$pf_field[3].'</h4></th></tr>';
+        } else {
+            echo gmuw_pf_user_profile_people_finder_field($user,$pf_field[0],$pf_field[1], $pf_field[2], $pf_field[3]);
         }
     }
 
@@ -184,22 +183,40 @@ function gmuw_pf_extra_user_profile_fields($user) {
 }
 
 // return user profile screen people finder field
-function gmuw_pf_user_profile_people_finder_field($user,$field_name, $field_title, $field_desc) {
+function gmuw_pf_user_profile_people_finder_field($user, $field_type, $field_name, $field_title, $field_desc) {
 
     //initialize variables
     $return_value='';
 
-    //pf_title
     $return_value.='<tr>';
     $return_value.='<th><label for="'.$field_name.'">'.$field_title.'</label></th>';
     $return_value.='<td>';
 
     $return_value.='<table class="pf-profile-layout">';
     $return_value.='<tr>';
-    
+
     $return_value.='<td>';
+
     //user-entered field
-    $return_value.='<input type="text" name="'.$field_name.'" id="'.$field_name.'" value="' . esc_attr( get_user_meta( $user->ID, $field_name, true ) ) . '" class="regular-text" /><br />';
+    if ($field_type=='text') {
+        $return_value.='<input type="text" name="'.$field_name.'" id="'.$field_name.'" value="' . esc_attr( get_user_meta( $user->ID, $field_name, true ) ) . '" class="regular-text" /><br />';
+    }
+    if ($field_type=='building' || $field_type=='department') {
+
+        //get current field value
+        $current_field_value = get_user_meta( $user->ID, $field_name, true );
+
+        //display select field
+        $return_value.='<select name="'.$field_name.'" id="'.$field_name.'">';
+        $return_value.='<option value="">Select '.$field_type.'...</option>';
+        foreach (get_terms(array('taxonomy'=>$field_type,'hide_empty'=>false)) as $term) {
+        $return_value.='<option value="'.$term->term_id.'"';
+        $term->term_id==$current_field_value ? $return_value.=' selected ' : '';
+        $return_value.='>' . $term->name . '</option>';
+        }
+        $return_value.='</select><br />';
+    }
+
     $return_value.='<p><span class="description">'.$field_desc.'</span></p>';
     //approved hidden field
     if (current_user_can('manage_options')) {
@@ -268,7 +285,7 @@ function gmuw_pf_save_extra_user_profile_fields( $user_id ) {
 
     //save fields
     foreach ($pf_fields as $pf_field) {
-        if ($pf_field[0]=='text') {
+        if ($pf_field[0]!='heading') {
             gmuw_pf_save_extra_user_profile_field($user_id, $pf_field[1]);
         }
     }

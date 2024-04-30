@@ -38,11 +38,11 @@ jQuery(document).ready(function(){
     //get field name
     pf_field_name=jQuery(this).attr('data-pf-field');
     //get field value
-    pf_field_value=jQuery('input#'+pf_field_name).val();
+    pf_field_value=jQuery('#'+pf_field_name).val();
     //set approved field value to user-entered field value
     jQuery('input#'+pf_field_name+'_approved').val(pf_field_value);
     //change the input field style to indicate that it is ready to be saved
-    jQuery('input#'+pf_field_name).css('color','green').css('font-weight','bold');
+    jQuery('#'+pf_field_name).css('color','green').css('font-weight','bold');
     //message about saving
     //alert('This field is marked for approval; now you must save.');
   });
