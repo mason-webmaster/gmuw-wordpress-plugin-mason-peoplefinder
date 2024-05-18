@@ -71,6 +71,9 @@ require('php/taxonomies.php');
 // ip addresses
 require('php/ip-addresses.php');
 
+// user search
+require('php/user-search.php');
+
 //Register activation hook
 register_activation_hook(
 	__FILE__,

@@ -79,3 +79,21 @@ function gmuw_pf_add_sublevel_menu_item_import_students() {
 	);
 
 }
+
+/**
+ * Adds link to plugin admin search page to Wordpress admin menu as a sub-menu item under Mason
+ */
+add_action('admin_menu', 'gmuw_pf_add_sublevel_menu_item_admin_search');
+function gmuw_pf_add_sublevel_menu_item_admin_search() {
+
+	add_submenu_page(
+		'gmuw',
+		'People Finder: Search',
+		'People Finder Search',
+		'manage_options',
+		'gmuw_pf_admin_search',
+		'gmuw_pf_display_page_admin_search',
+		4
+	);
+
+}
