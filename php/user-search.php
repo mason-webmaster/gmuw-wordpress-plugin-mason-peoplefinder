@@ -117,7 +117,7 @@ function gmuw_pf_show_admin_users_search_results($myusers){
 	$return_value='';
 
 	//begin table
-	$return_value.='<table>';
+	$return_value.='<table class="data_table">';
 	
 	//table header
 	$return_value.='<thead>';
