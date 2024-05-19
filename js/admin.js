@@ -1,7 +1,11 @@
 //Implement datatables
 jQuery(document).ready(function() {
   jQuery('table.data_table').DataTable({
-    paging: false
+    paging: false,
+    dom: 'Bfrtip',
+    buttons: [
+      'copy', 'excel', 'csv', 'print'
+    ]
   });
 });
 
