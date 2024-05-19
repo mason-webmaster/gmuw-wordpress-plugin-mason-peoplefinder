@@ -359,7 +359,7 @@ function gmuw_pf_notify_admin_on_user_update(){
     //if user is not an admin...
     if (!current_user_can( 'administrator' )){
 
-        $to = 'jmacario@gmu.edu';
+        $to = 'masondir@gmu.edu';
         $subject = 'user updated profile';
         $message = "the user : " .$current_user->display_name . " has updated his profile with:\n";
         foreach($_POST as $key => $value){
