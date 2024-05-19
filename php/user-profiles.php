@@ -344,3 +344,29 @@ function gmuw_pf_save_extra_user_profile_field( $user_id, $field_name ) {
     }  
 
 }
+
+/**
+ * Send notification email when a user profile is edited (by a non-administrator)
+ */
+add_action( 'personal_options_update', 'gmuw_pf_notify_admin_on_user_update' );
+add_action( 'edit_user_profile_update','gmuw_pf_notify_admin_on_user_update');
+function gmuw_pf_notify_admin_on_user_update(){
+
+    //get current user info
+    global $current_user;
+    get_currentuserinfo();
+
+    //if user is not an admin...
+    if (!current_user_can( 'administrator' )){
+
+        $to = 'jmacario@gmu.edu';
+        $subject = 'user updated profile';
+        $message = "the user : " .$current_user->display_name . " has updated his profile with:\n";
+        foreach($_POST as $key => $value){
+            $message .= $key . ": ". $value ."\n";
+        }
+        wp_mail( $to, $subject, $message);
+
+    }
+
+}
