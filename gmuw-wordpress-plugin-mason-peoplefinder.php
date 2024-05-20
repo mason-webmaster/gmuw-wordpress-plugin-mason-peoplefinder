@@ -74,6 +74,9 @@ require('php/ip-addresses.php');
 // user search
 require('php/user-search.php');
 
+// WPForms customizations
+require('php/wpforms.php');
+
 //Register activation hook
 register_activation_hook(
 	__FILE__,
