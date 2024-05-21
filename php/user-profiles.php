@@ -292,6 +292,9 @@ function gmuw_pf_save_extra_user_profile_fields( $user_id ) {
         }
     }
 
+    //update user last updated date
+    update_user_meta( $user_id, 'pf_last_updated', date('YmdHis') );
+
     //handle search key field
     //only if we're an admin
     if (current_user_can('manage_options')) {
