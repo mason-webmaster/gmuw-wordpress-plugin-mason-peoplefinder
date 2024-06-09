@@ -41,6 +41,9 @@ include('php/admin-page.php');
 // Plugin settings
 include('php/settings.php');
 
+// post types
+require('php/post-types.php');
+
 // Admin scripts
 require('php/admin-scripts.php');
 
