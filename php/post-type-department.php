@@ -70,6 +70,8 @@ function gmuw_pf_add_columns_department ($columns) {
 		'building' => 'Building',
 		'contact_email' => 'Contact email',
 		'acronym' => 'Acronym',
+        //other fields
+        'search_key' => 'Search key',
     ) );
 
 }
@@ -84,6 +86,39 @@ function gmuw_pf_department_custom_column ($column, $post_id) {
         default:
             echo get_post_meta($post_id, $column, true);
         	break;
+    }
+
+}
+
+/**
+ * The search key postmeta field for this custom post type should be set programatically using the title and acronym post meta field
+ * This function handles setting the search key postmeta field based on the post title and acronym post meta field when the record is saved
+  */
+add_action( 'save_post', 'gmuw_pf_fix_post_meta_departments' );
+function gmuw_pf_fix_post_meta_departments($post_id) {
+
+    // If this is a revision, get real post ID
+    if ( $parent_id = wp_is_post_revision( $post_id ) )
+        $post_id = $parent_id;
+
+    // Check if this post is the right type of post
+    if (get_post_type($post_id)=='department') {
+
+        // find parent post_id
+        if ( $post_parent_id = wp_get_post_parent_id( $post_id ) ) {
+            $post_id = $post_parent_id;
+        }
+
+        // get custom search key
+        // get info for search key
+        //get acronym
+        $acronym = get_post_meta($post_id, 'acronym', true );
+        //get post title
+        $department_name = get_the_title($post_id);
+
+        //set custom search key
+        update_post_meta($post_id, 'search_key', $department_name . ' ' . $acronym);
+
     }
 
 }

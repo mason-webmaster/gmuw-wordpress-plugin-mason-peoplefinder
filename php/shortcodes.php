@@ -138,6 +138,7 @@ function gmuw_pf_search_form($atts = [], $content = null, $tag = ''){
     $content.="<option value='everyone'".($who=='everyone'?' selected':'').">Everyone</option>";
     $content.="<option value='facstaff'".($who=='facstaff'?' selected':'').">Faculty/Staff/Affiliates</option>";
     $content.="<option value='students'".($who=='students'?' selected':'').">Students Only</option>";
+    $content.="<option value='departments'".($who=='departments'?' selected':'').">Departments Only</option>";
     $content.="</select>";
 
     //submit button
@@ -338,6 +339,74 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 
       if (!empty($myuser->pf_pronouns_approved)) {
         $content.='Pronouns: ' . $myuser->pf_pronouns_approved . '<br />';
+      }
+
+      $content.='</p>';
+
+    }
+
+  }
+
+  //should we show department results?
+  if ($who=='everyone' || $who=='departments') {
+
+    $content .= '<h4>Departments</h4>';
+
+    //get posts which match this search term
+    $myposts = get_posts(
+      array(
+        'post_type'  => 'department',
+        'meta_query' => array(
+          array(
+            'key' => 'search_key',
+            'value' => $search,
+            'compare' => 'LIKE'
+          )
+        )
+      )
+    );
+
+    //loop through posts
+    foreach ($myposts as $mypost) {
+
+      $content.='<p>';
+
+      //$content.='ID: ' . $mypost->ID . '<br />';
+
+      $content.='<span class="pf-search-results-name">' . $mypost->post_title . '</span><br />';
+
+      if (!empty($mypost->acronym)) {
+        $content.=$mypost->acronym . '<br />';
+      }
+
+
+      //location
+      if (!empty($mypost->room_number) || !empty($mypost->building) || !empty($mypost->pf_mailstop_approved)) {
+        if (!empty($mypost->room_number)) {
+          $content.=$mypost->room_number . ' ';
+        }
+        if (!empty($mypost->building)) {
+          $content.=$mypost->building;
+        }
+        if (!empty($mypost->mail_stop_number)) {
+          $content.=', MSN '.$mypost->mail_stop_number;
+        }
+        $content.='<br />';
+      }
+
+      if (!empty($mypost->phone_number)) {
+          $content.='Phone: ' . $mypost->phone_number . '<br />';
+      }
+
+      if (!empty($mypost->fax_number)) {
+        $content.='Fax: ' . $mypost->fax_number . '<br />';
+      }
+
+      // if we are in the Mason IP range, show the email address
+      if (gmuw_pf_ip_in_mason_range($_SERVER['REMOTE_ADDR'])) {
+        if (!empty($mypost->contact_email)) {
+          $content.='Email: <a href="mailto:'.$mypost->contact_email.'">' . $mypost->contact_email . '</a><br />';
+        }
       }
 
       $content.='</p>';
