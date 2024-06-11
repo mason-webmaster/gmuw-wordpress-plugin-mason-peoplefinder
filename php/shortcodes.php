@@ -442,8 +442,10 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
         if (!empty($mypost->room_number)) {
           $content.=$mypost->room_number . ' ';
         }
-        if (!empty($mypost->building)) {
-          $content.=$mypost->building;
+        if (!empty($mypost->building_id)) {
+            if (ctype_digit($mypost->building_id)) {
+                $content.=get_term($mypost->building_id)->name;
+            }
         }
         if (!empty($mypost->mail_stop_number)) {
           $content.=', MSN '.$mypost->mail_stop_number;

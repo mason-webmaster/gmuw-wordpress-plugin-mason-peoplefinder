@@ -67,7 +67,7 @@ function gmuw_pf_add_columns_department ($columns) {
 		'fax_number' => 'Fax number',
 		'mail_stop_number' => 'Mail stop number',
 		'room_number' => 'Room number',
-		'building' => 'Building',
+		'building_id' => 'Building',
 		'contact_email' => 'Contact email',
 		'acronym' => 'Acronym',
         //other fields
@@ -81,7 +81,10 @@ add_action ('manage_department_posts_custom_column', 'gmuw_pf_department_custom_
 function gmuw_pf_department_custom_column ($column, $post_id) {
 
     switch ($column) {
-        case '':
+        case 'building_id':
+            if (ctype_digit(get_post_meta($post_id, $column, true))) {
+                echo get_term(get_post_meta($post_id, $column, true))->name;
+            }
             break;
         default:
             echo get_post_meta($post_id, $column, true);
