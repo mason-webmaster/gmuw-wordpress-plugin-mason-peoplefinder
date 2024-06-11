@@ -38,6 +38,9 @@ include('php/admin-menu.php');
 // Admin page
 include('php/admin-page.php');
 
+// Admin dashboard
+include('php/admin-dashboard.php');
+
 // Plugin settings
 include('php/settings.php');
 
