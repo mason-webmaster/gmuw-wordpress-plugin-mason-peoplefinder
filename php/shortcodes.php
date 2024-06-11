@@ -246,6 +246,8 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 
     $content .= '<h4>Faculty/Staff</h4>';
 
+    //get users who match this search term...
+
     //begin to define define get_users meta query array
     $users_meta_query_array=array();
     //its going to be an OR
@@ -258,7 +260,56 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
     );
     //print_r($users_meta_query_array);
 
-    //get users who match this search term
+    /* --disable this section if search performance is too bad-- */
+    //...and get any departments the names of which match the search term, and the ids of which occur in any of the user meta fields which link to departments...
+
+    //get the ID numbers of departments taxonomy terms whose names match this search term
+    $my_department_result_term_ids = get_terms([
+        'taxonomy' => 'department',
+        'hide_empty' => false,
+        'name__like' => $search,
+        'fields' => 'ids'
+
+    ]);
+    //print_r($my_department_result_term_ids);
+
+    //do we have matching department taxonomy terms?
+    if ($my_department_result_term_ids) {
+
+      //loop through the matching department IDs
+      foreach($my_department_result_term_ids as $my_department_result_term_id) {
+
+        //add items to the meta query array for each field which could have a department ID
+        $users_meta_query_array[]=array(
+          'key' => 'pf_affiliation_approved',
+          'value' => $my_department_result_term_id,
+          'compare' => 'LIKE'
+        );
+        $users_meta_query_array[]=array(
+          'key' => 'pf_affiliation_2_approved',
+          'value' => $my_department_result_term_id,
+          'compare' => 'LIKE'
+        );
+        $users_meta_query_array[]=array(
+          'key' => 'pf_department_approved',
+          'value' => $my_department_result_term_id,
+          'compare' => 'LIKE'
+        );
+        $users_meta_query_array[]=array(
+          'key' => 'pf_department_2_approved',
+          'value' => $my_department_result_term_id,
+          'compare' => 'LIKE'
+        );
+
+      }
+
+    }
+    //echo '<pre>';
+    //print_r($users_meta_query_array);
+    //echo '</pre>';
+    /* --end section to disable if search performance is too bad-- */
+
+    //get users
     $myusers = get_users(
       array(
         'role' => 'subscriber',
