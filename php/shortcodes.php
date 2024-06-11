@@ -246,17 +246,23 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 
     $content .= '<h4>Faculty/Staff</h4>';
 
+    //begin to define define get_users meta query array
+    $users_meta_query_array=array();
+    //its going to be an OR
+    $users_meta_query_array['relation']= 'OR';
+    //between whether the search text matches the search key
+    $users_meta_query_array[]=array(
+      'key' => 'pf_search_key',
+      'value' => $search,
+      'compare' => 'LIKE'
+    );
+    //print_r($users_meta_query_array);
+
     //get users who match this search term
     $myusers = get_users(
       array(
         'role' => 'subscriber',
-        'meta_query' => array(
-          array(
-            'key' => 'pf_search_key',
-            'value' => $search,
-            'compare' => 'LIKE'
-          )
-        )
+        'meta_query' => $users_meta_query_array,
       )
     );
 
