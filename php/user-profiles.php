@@ -304,11 +304,9 @@ function gmuw_pf_save_extra_user_profile_fields( $user_id ) {
         
         //set array of fields not to include in search key
         $exclude_from_search_key=array(
-            'pf_affiliation',
             'pf_building',
             'pf_room',
             'pf_mailstop',
-            'pf_affiliation_2',
             'pf_building_2',
             'pf_room_2',
             'pf_mailstop_2',
@@ -319,8 +317,23 @@ function gmuw_pf_save_extra_user_profile_fields( $user_id ) {
         foreach ($pf_fields as $pf_field) {
             //should we include this field in the search key?
             if (!in_array($pf_field[1],$exclude_from_search_key)) {
-                //add approved field value
-                $search_key_value .= $_POST[$pf_field[1].'_approved'] . ' ';
+                //are we a department term relation field?
+                switch ($pf_field[1]) {
+                    case 'pf_department':
+                    case 'pf_department_2':
+                    case 'pf_affiliation':
+                    case 'pf_affiliation_2':
+                        //get department term name
+                        $department_term_name = get_term($_POST[$pf_field[1].'_approved'])->name;
+                        //add approved field value
+                        $search_key_value .= $department_term_name . ' ';
+                        break;
+                    default:
+                        //add approved field value
+                        $search_key_value .= $_POST[$pf_field[1].'_approved'] . ' ';
+                        break;
+
+                }
             }
         }
         
