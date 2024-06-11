@@ -5,9 +5,20 @@
  */
 
 
-function gmuw_pf_user_search_get_users($mode,$search_id){
+function gmuw_pf_user_search_get_users($mode,$search_id=null){
 
 	switch($mode){
+		case 'recently_updated':
+
+			//set up user recently_updated search
+			$args = array(
+				'meta_key' => 'pf_last_updated',
+				'order' => 'DESC',
+				'orderby' => 'meta_value_num'
+			);
+
+			break;
+
 		case 'department':
 
 			//set up user department search

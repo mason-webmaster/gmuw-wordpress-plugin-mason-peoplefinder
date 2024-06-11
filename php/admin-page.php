@@ -119,6 +119,16 @@ function gmuw_pf_display_page_admin_search() {
 
 	echo '<br />';
 
+	// recently_updated form
+	echo '<form method="post" action="admin.php?page=gmuw_pf_admin_search" />';
+
+	//submit button
+	echo '<p><button name="submit" type="submit" value="recently_updated" />Recently Updated</button></p>';
+
+	echo '</form>';
+
+	echo '<br />';
+
 	// building form
 	echo '<form method="post" action="admin.php?page=gmuw_pf_admin_search" />';
 
@@ -172,6 +182,22 @@ function gmuw_pf_display_page_admin_search() {
 	if (isset($_POST['submit'])) {
 
 		//We have a form submission. Proceed...
+
+		if ($_POST['submit']=='recently_updated') {
+			echo '<h2>Results: Recently Updated</h2>';
+
+			//get users
+			$myusers = gmuw_pf_user_search_get_users('recently_updated');
+
+			//show results
+			if (!$myusers) {
+				echo '<p>No results</p>';
+			} else {
+				echo gmuw_pf_show_admin_users_search_results($myusers);
+			}
+
+
+		}
 
 		if ($_POST['submit']=='building') {
 			echo '<h2>Results: Building</h2>';
