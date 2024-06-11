@@ -386,3 +386,32 @@ function gmuw_pf_notify_admin_on_user_update(){
     }
 
 }
+
+add_filter('manage_users_columns', 'gmuw_pf_add_columns_users');
+function gmuw_pf_add_columns_users($columns) {
+
+    $columns['pf_last_updated'] = 'Last Updated';
+    return $columns;
+
+}
+
+add_action('manage_users_custom_column',  'gmuw_pf_add_columns_users_content', 10, 3);
+function gmuw_pf_add_columns_users_content($value, $column_name, $user_id) {
+
+    //create return variable
+    $return_value='';
+
+    //set return value based on column
+    switch ($column_name) {
+        case 'pf_last_updated':
+            //get date value from user meta
+            $return_value=gmuw_pf_display_last_modified_date(get_user_meta($user_id,'pf_last_updated',true));
+            break;
+        default:
+            break;
+    }
+
+    //return value
+    return $return_value;
+
+}

@@ -111,6 +111,7 @@ function gmuw_pf_show_admin_users_search_results($myusers){
 	pf_mailstop_2
 	pf_mailstop_2_approved
 	pf_search_key
+	pf_last_updated
 	*/
 
 	//initialize return variable
@@ -158,6 +159,7 @@ function gmuw_pf_show_admin_users_search_results($myusers){
 	//$return_value.='<th>pf_mailstop_2</th>';
 	$return_value.='<th>pf_mailstop_2_approved</th>';
 	//$return_value.='<th>pf_search_key</th>';
+	$return_value.='<th>pf_last_updated</th>';
 	$return_value.='</tr>';
 	$return_value.='</thead>';
 
@@ -233,6 +235,7 @@ function gmuw_pf_show_admin_users_search_results($myusers){
 		//$return_value.='<td>'.$myuser->pf_mailstop_2.'</td>';
 		$return_value.='<td>'.$myuser->pf_mailstop_2_approved.'</td>';
 		//$return_value.='<td>'.$myuser->pf_search_key.'</td>';
+		$return_value.='<td>'.gmuw_pf_display_last_modified_date($myuser->pf_last_updated).'</td>';
 		$return_value.='</tr>';
 	}
 

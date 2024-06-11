@@ -77,6 +77,9 @@ require('php/ip-addresses.php');
 // user search
 require('php/user-search.php');
 
+// dates
+require('php/dates.php');
+
 // WPForms customizations
 require('php/wpforms.php');
 
