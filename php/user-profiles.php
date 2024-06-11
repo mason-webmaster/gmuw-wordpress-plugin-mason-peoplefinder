@@ -391,6 +391,7 @@ add_filter('manage_users_columns', 'gmuw_pf_add_columns_users');
 function gmuw_pf_add_columns_users($columns) {
 
     $columns['pf_last_updated'] = 'Last Updated';
+    $columns['pf_search_key'] = 'Search Key';
     return $columns;
 
 }
@@ -406,6 +407,9 @@ function gmuw_pf_add_columns_users_content($value, $column_name, $user_id) {
         case 'pf_last_updated':
             //get date value from user meta
             $return_value=gmuw_pf_display_last_modified_date(get_user_meta($user_id,'pf_last_updated',true));
+            break;
+        case 'pf_search_key':
+            $return_value=get_user_meta($user_id,'pf_search_key',true);
             break;
         default:
             break;
