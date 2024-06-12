@@ -419,3 +419,24 @@ function gmuw_pf_add_columns_users_content($value, $column_name, $user_id) {
     return $return_value;
 
 }
+
+/* set up dashboard display config for new administrators when a new administrator user is created */
+add_action( 'user_register', 'gmuw_pf_save_user_meta_dashboard_info', 10, 1 );
+function gmuw_pf_save_user_meta_dashboard_info( $user_id ) {
+
+    //set default values for usermeta fields which control the dashboard layout
+    //what boxes are where
+    $meta_box_order_dashboard_value='a:4:{s:6:"normal";s:269:"wpforms_reports_widget_lite,dashboard_site_health,dashboard_right_now,dashboard_activity,gmuw_pf_custom_dashboard_meta_box_students,gmuj_custom_dashboard_meta_box_theme_support,gmuw_pf_custom_dashboard_meta_box_facultystaff,gmuw_pf_custom_dashboard_meta_box_departments";s:4:"side";s:290:"dashboard_quick_press,dashboard_primary,gmuj_custom_dashboard_meta_box_mason_recommended_plugins,gmuj_custom_dashboard_meta_box_mason_resources,gmuj_custom_dashboard_meta_box_mason_configuration_messages,gmuw_pf_custom_dashboard_meta_box_taxonomies,gmuw_pf_custom_dashboard_meta_box_reports";s:7:"column3";s:31:"simple_history_dashboard_widget";s:7:"column4";s:0:"";}';
+    //what boxes are hidden
+    $metaboxhidden_dashboard_value='a:10:{i:0;s:27:"wpforms_reports_widget_lite";i:1;s:21:"dashboard_site_health";i:2;s:19:"dashboard_right_now";i:3;s:18:"dashboard_activity";i:4;s:44:"gmuj_custom_dashboard_meta_box_theme_support";i:5;s:21:"dashboard_quick_press";i:6;s:17:"dashboard_primary";i:7;s:56:"gmuj_custom_dashboard_meta_box_mason_recommended_plugins";i:8;s:46:"gmuj_custom_dashboard_meta_box_mason_resources";i:9;s:59:"gmuj_custom_dashboard_meta_box_mason_configuration_messages";}';
+
+    //if this user is an administrator, set the dashboard display by adding the appropriate usermeta values
+    if ($_POST['role']=='administrator') {
+        //add user meta
+        add_user_meta( $user_id, 'metaboxhidden_dashboard', maybe_unserialize($metaboxhidden_dashboard_value) );
+        add_user_meta( $user_id, 'meta-box-order_dashboard', maybe_unserialize($meta_box_order_dashboard_value) );
+    }
+
+    return;
+
+}
