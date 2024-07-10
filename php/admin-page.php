@@ -184,7 +184,7 @@ function gmuw_pf_display_page_admin_search() {
 		//We have a form submission. Proceed...
 
 		if ($_POST['submit']=='recently_updated') {
-			echo '<h2>Results: Recently Updated (Top 100 Most Recent)</h2>';
+			echo '<h2>Results: Recently Updated (Top 300 Most Recent)</h2>';
 
 			//get users
 			$myusers = gmuw_pf_user_search_get_users('recently_updated');
