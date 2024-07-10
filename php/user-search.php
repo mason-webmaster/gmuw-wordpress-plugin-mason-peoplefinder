@@ -14,7 +14,8 @@ function gmuw_pf_user_search_get_users($mode,$search_id=null){
 			$args = array(
 				'meta_key' => 'pf_last_updated',
 				'order' => 'DESC',
-				'orderby' => 'meta_value_num'
+				'orderby' => 'meta_value_num',
+				'number' => 100,
 			);
 
 			break;
