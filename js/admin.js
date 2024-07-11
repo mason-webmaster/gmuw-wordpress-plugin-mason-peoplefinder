@@ -27,17 +27,17 @@ jQuery(document).ready(function(){
 jQuery(document).ready(function(){
 
   //establish click handler for people finder field approval all button
-  jQuery('.user-edit-php a.pf_approve_all').on('click', function(e) {
+  jQuery('.user-edit-php a.pf_approve_all, .profile-php a.pf_approve_all').on('click', function(e) {
     e.preventDefault();
     //alert('You clicked the approve all button.');
-    jQuery('.user-edit-php a.pf_approve').each(function( index ) {
+    jQuery('.user-edit-php a.pf_approve, .profile-php a.pf_approve').each(function( index ) {
       //console.log( index + ": " + jQuery( this ).text() );
       jQuery(this).trigger('click');
     });
   });
 
   //establish click handler for people finder field approval buttons
-  jQuery('.user-edit-php a.pf_approve').on('click', function(e) {
+  jQuery('.user-edit-php a.pf_approve, .profile-php a.pf_approve').on('click', function(e) {
     e.preventDefault();
     //get field name
     pf_field_name=jQuery(this).attr('data-pf-field');
@@ -52,17 +52,17 @@ jQuery(document).ready(function(){
   });
 
   //establish click handler for people finder field disapproval all button
-  jQuery('.user-edit-php a.pf_disapprove_all').on('click', function(e) {
+  jQuery('.user-edit-php a.pf_disapprove_all, .profile-php a.pf_disapprove_all').on('click', function(e) {
     e.preventDefault();
     alert('You clicked the disapprove all button.');
-    jQuery('.user-edit-php a.pf_disapprove').each(function( index ) {
+    jQuery('.user-edit-php a.pf_disapprove, .profile-php a.pf_disapprove').each(function( index ) {
       //console.log( index + ": " + jQuery( this ).text() );
       jQuery(this).trigger('click');
     });
   });
 
   //establish click handler for people finder field disapprove buttons
-  jQuery('.user-edit-php a.pf_disapprove').on('click', function(e) {
+  jQuery('.user-edit-php a.pf_disapprove, .profile-php a.pf_disapprove').on('click', function(e) {
     e.preventDefault();
     //get field name
     pf_field_name=jQuery(this).attr('data-pf-field');
