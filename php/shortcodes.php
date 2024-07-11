@@ -312,7 +312,6 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
     //get users
     $myusers = get_users(
       array(
-        'role' => 'subscriber',
         'meta_query' => $users_meta_query_array,
       )
     );
