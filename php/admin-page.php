@@ -271,3 +271,91 @@ function gmuw_pf_display_page_admin_search() {
 	echo "</div>";
 
 }
+
+/**
+ * Generates the plugin regenerate user search keys page
+ */
+function gmuw_pf_display_page_admin_user_search_keys() {
+
+	// Only continue if this user has the 'manage options' capability
+	if (!current_user_can('manage_options')) return;
+
+	// Begin HTML output
+	echo "<div class='wrap'>";
+
+	// Page title
+	echo "<h1>" . esc_html(get_admin_page_title()) . "</h1>";
+
+	// Output basic plugin info
+	echo "<p>This plugin provides People Finder setup.</p>";
+
+	//loop through all records and generate and save search keys
+
+    //get users
+    $myusers = get_users(
+      array(
+        'role' => 'subscriber',
+        'number' => 1000,
+        'paged' => 1,
+        'orderby' => 'ID',
+      )
+    );
+
+    //set list of people finder fields
+    $pf_fields = gmuw_pf_custom_fields_array();
+
+    //set array of fields not to include in search key
+    $exclude_from_search_key=array(
+        'pf_building',
+        'pf_room',
+        'pf_mailstop',
+        'pf_building_2',
+        'pf_room_2',
+        'pf_mailstop_2',
+        'pf_pronouns',
+    );
+
+    //loop through users
+    foreach ($myusers as $myuser) {
+		//initialize variables
+		$search_key_value='';
+
+		//save user to update search key
+		//echo "<p>".$myuser->ID."</p>";
+
+        //generate search key field
+        foreach ($pf_fields as $pf_field) {
+            //should we include this field in the search key?
+            if (!in_array($pf_field[1],$exclude_from_search_key)) {
+                //are we a department term relation field?
+                switch ($pf_field[1]) {
+                    case 'pf_department':
+                    case 'pf_department_2':
+                    case 'pf_affiliation':
+                    case 'pf_affiliation_2':
+                        //get department term name
+                        $department_term_name = get_term(get_user_meta($myuser->ID, $pf_field[1].'_approved', true ))->name;
+                        //add approved field value
+                        $search_key_value .= $department_term_name . ' ';
+                        break;
+                    default:
+                        //add approved field value
+                        $search_key_value .= get_user_meta($myuser->ID, $pf_field[1].'_approved', true ) . ' ';
+                        break;
+
+                }
+            }
+        }
+        //output
+        echo "<p>".$myuser->ID.": ".$search_key_value."</p>";
+
+        //save search key field
+        update_user_meta( $myuser->ID, 'pf_search_key', $search_key_value );
+
+
+    }
+
+	// Finish HTML output
+	echo "</div>";
+
+}

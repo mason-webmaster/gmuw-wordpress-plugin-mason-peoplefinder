@@ -97,3 +97,21 @@ function gmuw_pf_add_sublevel_menu_item_admin_search() {
 	);
 
 }
+
+/**
+ * Adds link to plugin regenerate search keys page to Wordpress admin menu as a sub-menu item under Mason
+ */
+//add_action('admin_menu', 'gmuw_pf_add_sublevel_menu_item_admin_user_search_keys');
+function gmuw_pf_add_sublevel_menu_item_admin_user_search_keys() {
+
+	add_submenu_page(
+		'gmuw',
+		'People Finder: Generate User Search Keys',
+		'People Finder Generate User Search Keys',
+		'manage_options',
+		'gmuw_pf_admin_user_search_keys',
+		'gmuw_pf_display_page_admin_user_search_keys',
+		5
+	);
+
+}
