@@ -389,7 +389,7 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
       // if we are in the Mason IP range, show the email address
       if (gmuw_pf_ip_in_mason_range($_SERVER['REMOTE_ADDR'])) {
         if (!empty($myuser->pf_email_approved)) {
-          $content.='Email: <a href="mailto:'.$myuser->pf_email_approved.'@gmu.edu">' . $myuser->pf_email_approved . '@gmu.edu</a><br />';
+          $content.='Email: <a href="mailto:'.$myuser->pf_email_approved.'">' . $myuser->pf_email_approved . '</a><br />';
         }
       }
 
@@ -500,7 +500,7 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
         // if we are in the Mason IP range, show the email address
         if (gmuw_pf_ip_in_mason_range($_SERVER['REMOTE_ADDR'])) {
           if (!empty($student_result->student_email)) {
-            $content.='Email: <a href="mailto:'.$student_result->student_email.'@gmu.edu">'.$student_result->student_email . '@gmu.edu</a><br />';
+            $content.='Email: <a href="mailto:'.$student_result->student_email.'">'.$student_result->student_email . '</a><br />';
           }
         }
 
