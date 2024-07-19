@@ -29,6 +29,9 @@
 // Plugin activation
 require('php/activate.php');
 
+// functions
+include('php/functions.php');
+
 // Branding
 include('php/fnsBranding.php');
 

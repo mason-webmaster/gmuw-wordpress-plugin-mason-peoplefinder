@@ -379,11 +379,11 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
       }
 
       if (!empty($myuser->pf_phone_approved)) {
-          $content.='Phone: ' . sanitize_text_field($myuser->pf_phone_approved) . '<br />';
+          $content.='Phone: ' . gmuw_pf_format_phone_number(sanitize_text_field($myuser->pf_phone_approved)) . '<br />';
       }
 
       if (!empty($myuser->pf_fax_approved)) {
-        $content.='Fax: ' . sanitize_text_field($myuser->pf_fax_approved) . '<br />';
+        $content.='Fax: ' . gmuw_pf_format_phone_number(sanitize_text_field($myuser->pf_fax_approved)) . '<br />';
       }
 
       // if we are in the Mason IP range, show the email address
@@ -453,11 +453,11 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
       }
 
       if (!empty($mypost->phone_number)) {
-          $content.='Phone: ' . sanitize_text_field($mypost->phone_number) . '<br />';
+          $content.='Phone: ' . gmuw_pf_format_phone_number(sanitize_text_field($mypost->phone_number)) . '<br />';
       }
 
       if (!empty($mypost->fax_number)) {
-        $content.='Fax: ' . sanitize_text_field($mypost->fax_number) . '<br />';
+        $content.='Fax: ' . gmuw_pf_format_phone_number(sanitize_text_field($mypost->fax_number)) . '<br />';
       }
 
       // if we are in the Mason IP range, show the email address
@@ -510,7 +510,7 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 
         /*
         if (!empty($student_result->student_phone_number)) {
-          $content.=sanitize_text_field($student_result->student_phone_number) . '<br />';
+          $content.=gmuw_pf_format_phone_number(sanitize_text_field($student_result->student_phone_number)) . '<br />';
         }
         */
 
