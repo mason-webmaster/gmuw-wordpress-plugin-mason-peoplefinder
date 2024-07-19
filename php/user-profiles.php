@@ -120,6 +120,12 @@ function gmuw_pf_custom_fields_array() {
     //set up array
     $pf_fields = array(
         //type of field,field name,field title,field description,needs approval
+        array('heading','', 'General People Finder Settings', '',''),
+        array('yesno','pf_hide', 'Hide this entry completely?', 'Prevent this entry from appearing in the search results?',false),
+        array('yesno','pf_hide_location', 'Hide location?', 'Do not display location information in listing?',false),
+        array('yesno','pf_hide_email', 'Hide email address?', 'Do not display email address in listing?',false),
+        array('yesno','pf_hide_phonenumbers', 'Hide phone/fax numbers?', 'Do not display phone/fax numbers in listing?',false),
+
         array('heading','', 'Personal Information', '',''),
         array('text','pf_name', 'Name', 'Please enter your name as you would like it to appear.',true),
         array('text','pf_pronouns', 'Pronouns', 'Your preferred pronouns.',true),
