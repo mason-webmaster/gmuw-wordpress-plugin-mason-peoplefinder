@@ -119,30 +119,31 @@ function gmuw_pf_custom_fields_array() {
 
     //set up array
     $pf_fields = array(
-        array('heading','', 'Personal Information', ''),
-        array('text','pf_name', 'Name', 'Please enter your name as you would like it to appear.'),
-        array('text','pf_pronouns', 'Pronouns', 'Your preferred pronouns.'),
+        //type of field,field name,field title,field description,needs approval
+        array('heading','', 'Personal Information', '',''),
+        array('text','pf_name', 'Name', 'Please enter your name as you would like it to appear.',true),
+        array('text','pf_pronouns', 'Pronouns', 'Your preferred pronouns.',true),
 
-        array('heading','', 'Contact Information', ''),
-        array('text','pf_phone', 'Phone Number', 'Your phone number.'),
-        array('text','pf_fax', 'Fax Number', 'Your fax number.'),
-        array('text','pf_email', 'Email Address/NetID', 'Just the part before the gmu.edu, please.'),
+        array('heading','', 'Contact Information', '',''),
+        array('text','pf_phone', 'Phone Number', 'Your phone number.',true),
+        array('text','pf_fax', 'Fax Number', 'Your fax number.',true),
+        array('text','pf_email', 'Email Address/NetID', 'Just the part before the gmu.edu, please.',true),
 
-        array('heading','', 'Please enter information about your first role.', ''),
-        array('text','pf_title', 'Title 1', 'Please enter your title.'),
-        array('department','pf_department', 'Department 1', 'Please enter your department.'),
-        array('department','pf_affiliation', 'Affiliation 1', 'Please enter your professional affiliation.'),
-        array('building','pf_building', 'Building 1', 'Your building.'),
-        array('text','pf_room', 'Room 1', 'Your room number.'),
-        array('text','pf_mailstop', 'Mailstop 1', 'Your mailstop number (MSN).'),
+        array('heading','', 'Please enter information about your first role.', '',''),
+        array('text','pf_title', 'Title 1', 'Please enter your title.',true),
+        array('department','pf_department', 'Department 1', 'Please enter your department.',true),
+        array('department','pf_affiliation', 'Affiliation 1', 'Please enter your professional affiliation.',true),
+        array('building','pf_building', 'Building 1', 'Your building.',true),
+        array('text','pf_room', 'Room 1', 'Your room number.',true),
+        array('text','pf_mailstop', 'Mailstop 1', 'Your mailstop number (MSN).',true),
 
-        array('heading','', 'Please enter information about your second role.', ''),
-        array('text','pf_title_2', 'Title 2', 'Please enter your title.'),
-        array('department','pf_department_2', 'Department 2', 'Please enter your department.'),
-        array('department','pf_affiliation_2', 'Affiliation 2', 'Please enter your professional affiliation.'),
-        array('building','pf_building_2', 'Building 2', 'Your building.'),
-        array('text','pf_room_2', 'Room 2', 'Your room number.'),
-        array('text','pf_mailstop_2', 'Mailstop 2', 'Your mailstop number (MSN).'),
+        array('heading','', 'Please enter information about your second role.', '',''),
+        array('text','pf_title_2', 'Title 2', 'Please enter your title.',true),
+        array('department','pf_department_2', 'Department 2', 'Please enter your department.',true),
+        array('department','pf_affiliation_2', 'Affiliation 2', 'Please enter your professional affiliation.',true),
+        array('building','pf_building_2', 'Building 2', 'Your building.',true),
+        array('text','pf_room_2', 'Room 2', 'Your room number.',true),
+        array('text','pf_mailstop_2', 'Mailstop 2', 'Your mailstop number (MSN).',true),
 
     );
 
@@ -176,7 +177,7 @@ function gmuw_pf_extra_user_profile_fields($user) {
         if ($pf_field[0]=='heading') {
             echo '<tr><th colspan="2"><h4>'.$pf_field[2].' '.$pf_field[3].'</h4></th></tr>';
         } else {
-            echo gmuw_pf_user_profile_people_finder_field($user,$pf_field[0],$pf_field[1], $pf_field[2], $pf_field[3]);
+            echo gmuw_pf_user_profile_people_finder_field($user,$pf_field[0],$pf_field[1], $pf_field[2], $pf_field[3], $pf_field[4]);
         }
     }
 
@@ -185,7 +186,7 @@ function gmuw_pf_extra_user_profile_fields($user) {
 }
 
 // return user profile screen people finder field
-function gmuw_pf_user_profile_people_finder_field($user, $field_type, $field_name, $field_title, $field_desc) {
+function gmuw_pf_user_profile_people_finder_field($user, $field_type, $field_name, $field_title, $field_desc, $needs_approval) {
 
     //initialize variables
     $return_value='';
@@ -220,10 +221,15 @@ function gmuw_pf_user_profile_people_finder_field($user, $field_type, $field_nam
     }
 
     $return_value.='<p><span class="description">'.$field_desc.'</span></p>';
-    //approved hidden field
-    if (current_user_can('manage_options')) {
-        $return_value.='<input type="hidden" name="'.$field_name.'_approved" id="'.$field_name.'_approved" value="' . esc_attr( get_user_meta( $user->ID, ''.$field_name.'_approved', true ) ) . '" class="regular-text" />';
+
+    //does this field need approval?
+    if ($needs_approval) {
+        //approved hidden field
+        if (current_user_can('manage_options')) {
+            $return_value.='<input type="hidden" name="'.$field_name.'_approved" id="'.$field_name.'_approved" value="' . esc_attr( get_user_meta( $user->ID, ''.$field_name.'_approved', true ) ) . '" class="regular-text" />';
+        }
     }
+
     $return_value.='</td>';
 
     $return_value.='<td>';
@@ -235,23 +241,27 @@ function gmuw_pf_user_profile_people_finder_field($user, $field_type, $field_nam
             $return_value.=gmuw_pf_field_is_approved($user->ID,$field_name) ? '<span class="pf-field-status pf-field-status-approved">&#10003; Approved</span>' : '<span class="pf-field-status pf-field-status-pending">Pending approval</span>';
         }
     }
-    //are we an admin?
-    if (current_user_can('manage_options')) {
-        //is this field approved
-        if (gmuw_pf_field_is_approved($user->ID,$field_name)) { 
-            $return_value.='<p>';
-            $return_value.='<span class="pf-field-status pf-field-status-approved">&#10003; Approved</span>';
-            $return_value.='<a class="pf_disapprove button-primary" data-pf-field="'.$field_name.'" href="#">&#10006; Disapprove</a>';
-            $return_value.='</p>';
-        } else {
-            if (!empty(get_user_meta( $user->ID, $field_name, true ))) {
+
+    //approval interface, if we need approval for this field
+    if ($needs_approval) {
+        //are we an admin?
+        if (current_user_can('manage_options')) {
+            //is this field approved
+            if (gmuw_pf_field_is_approved($user->ID,$field_name)) {
                 $return_value.='<p>';
-                $return_value.='<span class="pf-field-status pf-field-status-pending" title="Current value: '. get_user_meta( $user->ID, $field_name.'_approved', true ) .'"">Not approved</span>';
-                $return_value.='<a class="pf_approve button-primary" data-pf-field="'.$field_name.'" href="#">Mark for Approval &#10003;</a>';
+                $return_value.='<span class="pf-field-status pf-field-status-approved">&#10003; Approved</span>';
+                $return_value.='<a class="pf_disapprove button-primary" data-pf-field="'.$field_name.'" href="#">&#10006; Disapprove</a>';
                 $return_value.='</p>';
+            } else {
+                if (!empty(get_user_meta( $user->ID, $field_name, true ))) {
+                    $return_value.='<p>';
+                    $return_value.='<span class="pf-field-status pf-field-status-pending" title="Current value: '. get_user_meta( $user->ID, $field_name.'_approved', true ) .'"">Not approved</span>';
+                    $return_value.='<a class="pf_approve button-primary" data-pf-field="'.$field_name.'" href="#">Mark for Approval &#10003;</a>';
+                    $return_value.='</p>';
+                }
             }
-        }       
-    }    
+        }
+    }
 
     $return_value.='</td>';
 
@@ -288,7 +298,7 @@ function gmuw_pf_save_extra_user_profile_fields( $user_id ) {
     //save fields
     foreach ($pf_fields as $pf_field) {
         if ($pf_field[0]!='heading') {
-            gmuw_pf_save_extra_user_profile_field($user_id, $pf_field[1]);
+            gmuw_pf_save_extra_user_profile_field($user_id, $pf_field[1], $pf_field[4]);
         }
     }
 
@@ -344,20 +354,24 @@ function gmuw_pf_save_extra_user_profile_fields( $user_id ) {
 
 }
 
-function gmuw_pf_save_extra_user_profile_field( $user_id, $field_name ) {
+function gmuw_pf_save_extra_user_profile_field( $user_id, $field_name, $needs_approval ) {
 
     //update user-entered field
     update_user_meta( $user_id, $field_name, $_POST[$field_name] );
     
-    //if we're an admin, also update the approved field
-    if (current_user_can('manage_options')) {
-        update_user_meta( $user_id, $field_name.'_approved', $_POST[$field_name.'_approved'] );
-    }  
+    if ($needs_approval) {
 
-    //if the user-entered field has been changed to blank, also clear the approved field
-    if (empty($_POST[$field_name])) {
-        update_user_meta( $user_id, $field_name.'_approved', '' );
-    }  
+        //if we're an admin, also update the approved field
+        if (current_user_can('manage_options')) {
+            update_user_meta( $user_id, $field_name.'_approved', $_POST[$field_name.'_approved'] );
+        }
+
+        //if the user-entered field has been changed to blank, also clear the approved field
+        if (empty($_POST[$field_name])) {
+            update_user_meta( $user_id, $field_name.'_approved', '' );
+        }
+
+    }
 
 }
 
