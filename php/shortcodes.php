@@ -238,7 +238,7 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
   $content .= '<h3>Results</h3>';
 
   $content .= '<p class="pf-search-results-note">';
-  $content .= 'Your searched for &ldquo;<em>'.$search.'</em>&rdquo; in &ldquo;<em>'.$who.'</em>&rdquo;.';
+  $content .= 'Your searched for &ldquo;<em>'.sanitize_text_field($search).'</em>&rdquo; in &ldquo;<em>'.$who.'</em>&rdquo;.';
   $content .= '</p>';
 
   //should we show faculty results?
@@ -323,78 +323,78 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 
       //$content.='ID: ' . $myuser->ID . '<br />';
 
-      $content.='<span class="pf-search-results-name">' . $myuser->pf_name . '</span><br />';
+      $content.='<span class="pf-search-results-name">' . sanitize_text_field($myuser->pf_name) . '</span><br />';
 
       if (!empty($myuser->pf_title_approved)) {
-        $content.=$myuser->pf_title_approved . '<br />';
+        $content.=sanitize_text_field($myuser->pf_title_approved) . '<br />';
       }
 
       if (!empty($myuser->pf_department_approved)) {
-        $content.=get_term_by('id', $myuser->pf_department_approved, 'department')->name . '<br />';
+        $content.=sanitize_text_field(get_term_by('id', $myuser->pf_department_approved, 'department')->name) . '<br />';
       }
 
       if (!empty($myuser->pf_affiliation_approved)) {
-        $content.=get_term_by('id', $myuser->pf_affiliation_approved, 'department')->name . '<br />';
+        $content.=sanitize_text_field(get_term_by('id', $myuser->pf_affiliation_approved, 'department')->name) . '<br />';
       }
 
       //location
       if (!empty($myuser->pf_room_approved) || !empty($myuser->pf_building_approved) || !empty($myuser->pf_mailstop_approved)) {
         if (!empty($myuser->pf_room_approved)) {
-          $content.=$myuser->pf_room_approved . ' ';
+          $content.=sanitize_text_field($myuser->pf_room_approved) . ' ';
         }
         if (!empty($myuser->pf_building_approved)) {
-          $content.=get_term_by('id', $myuser->pf_building_approved, 'building')->name;
+          $content.=sanitize_text_field(get_term_by('id', $myuser->pf_building_approved, 'building')->name);
         }
         if (!empty($myuser->pf_mailstop_approved)) {
-          $content.=', MSN '.$myuser->pf_mailstop_approved;
+          $content.=', MSN '.sanitize_text_field($myuser->pf_mailstop_approved);
         }
         $content.='<br />';
       }
 
       if (!empty($myuser->pf_title_2_approved)) {
         $content.='<br />';
-        $content.=$myuser->pf_title_2_approved . '<br />';
+        $content.=sanitize_text_field($myuser->pf_title_2_approved) . '<br />';
       }
 
       if (!empty($myuser->pf_department_2_approved)) {
-        $content.=get_term_by('id', $myuser->pf_department_2_approved, 'department')->name . '<br />';
+        $content.=sanitize_text_field(get_term_by('id', $myuser->pf_department_2_approved, 'department')->name) . '<br />';
       }
 
       if (!empty($myuser->pf_affiliation_2_approved)) {
-        $content.=get_term_by('id', $myuser->pf_affiliation_2_approved, 'department')->name . '<br />';
+        $content.=sanitize_text_field(get_term_by('id', $myuser->pf_affiliation_2_approved, 'department')->name) . '<br />';
       }
 
       //location2
       if (!empty($myuser->pf_room_2_approved) || !empty($myuser->pf_building_2_approved) || !empty($myuser->pf_mailstop_2_approved)) {
         if (!empty($myuser->pf_room_2_approved)) {
-          $content.=$myuser->pf_room_2_approved . ' ';
+          $content.=sanitize_text_field($myuser->pf_room_2_approved) . ' ';
         }
         if (!empty($myuser->pf_building_2_approved)) {
-          $content.=get_term_by('id', $myuser->pf_building_2_approved, 'building')->name;
+          $content.=sanitize_text_field(get_term_by('id', $myuser->pf_building_2_approved, 'building')->name);
         }
         if (!empty($myuser->pf_mailstop_2_approved)) {
-          $content.=', MSN '.$myuser->pf_mailstop_2_approved;
+          $content.=', MSN '.sanitize_text_field($myuser->pf_mailstop_2_approved);
         }
         $content.='<br />';
       }
 
       if (!empty($myuser->pf_phone_approved)) {
-          $content.='Phone: ' . $myuser->pf_phone_approved . '<br />';
+          $content.='Phone: ' . sanitize_text_field($myuser->pf_phone_approved) . '<br />';
       }
 
       if (!empty($myuser->pf_fax_approved)) {
-        $content.='Fax: ' . $myuser->pf_fax_approved . '<br />';
+        $content.='Fax: ' . sanitize_text_field($myuser->pf_fax_approved) . '<br />';
       }
 
       // if we are in the Mason IP range, show the email address
       if (gmuw_pf_ip_in_mason_range($_SERVER['REMOTE_ADDR'])) {
         if (!empty($myuser->pf_email_approved)) {
-          $content.='Email: <a href="mailto:'.$myuser->pf_email_approved.'">' . $myuser->pf_email_approved . '</a><br />';
+          $content.='Email: <a href="mailto:'.sanitize_email($myuser->pf_email_approved).'">' . sanitize_email($myuser->pf_email_approved) . '</a><br />';
         }
       }
 
       if (!empty($myuser->pf_pronouns_approved)) {
-        $content.='Pronouns: ' . $myuser->pf_pronouns_approved . '<br />';
+        $content.='Pronouns: ' . sanitize_text_field($myuser->pf_pronouns_approved) . '<br />';
       }
 
       $content.='</p>';
@@ -429,41 +429,41 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 
       //$content.='ID: ' . $mypost->ID . '<br />';
 
-      $content.='<span class="pf-search-results-name">' . $mypost->post_title . '</span><br />';
+      $content.='<span class="pf-search-results-name">' . sanitize_text_field($mypost->post_title) . '</span><br />';
 
       if (!empty($mypost->acronym)) {
-        $content.=$mypost->acronym . '<br />';
+        $content.=sanitize_text_field($mypost->acronym) . '<br />';
       }
 
 
       //location
       if (!empty($mypost->room_number) || !empty($mypost->building) || !empty($mypost->pf_mailstop_approved)) {
         if (!empty($mypost->room_number)) {
-          $content.=$mypost->room_number . ' ';
+          $content.=sanitize_text_field($mypost->room_number) . ' ';
         }
         if (!empty($mypost->building_id)) {
             if (ctype_digit($mypost->building_id)) {
-                $content.=get_term($mypost->building_id)->name;
+                $content.=sanitize_text_field(get_term($mypost->building_id)->name);
             }
         }
         if (!empty($mypost->mail_stop_number)) {
-          $content.=', MSN '.$mypost->mail_stop_number;
+          $content.=', MSN '.sanitize_text_field($mypost->mail_stop_number);
         }
         $content.='<br />';
       }
 
       if (!empty($mypost->phone_number)) {
-          $content.='Phone: ' . $mypost->phone_number . '<br />';
+          $content.='Phone: ' . sanitize_text_field($mypost->phone_number) . '<br />';
       }
 
       if (!empty($mypost->fax_number)) {
-        $content.='Fax: ' . $mypost->fax_number . '<br />';
+        $content.='Fax: ' . sanitize_text_field($mypost->fax_number) . '<br />';
       }
 
       // if we are in the Mason IP range, show the email address
       if (gmuw_pf_ip_in_mason_range($_SERVER['REMOTE_ADDR'])) {
         if (!empty($mypost->contact_email)) {
-          $content.='Email: <a href="mailto:'.$mypost->contact_email.'">' . $mypost->contact_email . '</a><br />';
+          $content.='Email: <a href="mailto:'.sanitize_email($mypost->contact_email).'">' . sanitize_email($mypost->contact_email) . '</a><br />';
         }
       }
 
@@ -495,27 +495,27 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 
         $content.='<p>';
 
-        $content.='<span class="pf-search-results-name">' . $student_result->student_name . '</span><br />';
+        $content.='<span class="pf-search-results-name">' . sanitize_text_field($student_result->student_name) . '</span><br />';
 
         // if we are in the Mason IP range, show the email address
         if (gmuw_pf_ip_in_mason_range($_SERVER['REMOTE_ADDR'])) {
           if (!empty($student_result->student_email)) {
-            $content.='Email: <a href="mailto:'.$student_result->student_email.'">'.$student_result->student_email . '</a><br />';
+            $content.='Email: <a href="mailto:'.sanitize_email($student_result->student_email).'">'.sanitize_email($student_result->student_email) . '</a><br />';
           }
         }
 
         if (!empty($student_result->student_major)) {
-          $content.='Major: '.$student_result->student_major . '<br />';
+          $content.='Major: '.sanitize_text_field($student_result->student_major) . '<br />';
         }
 
         /*
         if (!empty($student_result->student_phone_number)) {
-          $content.=$student_result->student_phone_number . '<br />';
+          $content.=sanitize_text_field($student_result->student_phone_number) . '<br />';
         }
         */
 
         if (!empty($student_result->student_pronouns)) {
-          $content.='Pronouns: '.$student_result->student_pronouns . '<br />';
+          $content.='Pronouns: '.sanitize_text_field($student_result->student_pronouns) . '<br />';
         }
 
         $content.='</p>';
