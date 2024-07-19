@@ -204,6 +204,14 @@ function gmuw_pf_user_profile_people_finder_field($user, $field_type, $field_nam
     if ($field_type=='text') {
         $return_value.='<input type="text" name="'.$field_name.'" id="'.$field_name.'" value="' . esc_attr( get_user_meta( $user->ID, $field_name, true ) ) . '" class="regular-text" /><br />';
     }
+    if ($field_type=='yesno') {
+        $return_value.='<select name="'.$field_name.'" id="'.$field_name.'">';
+        $return_value.='<option value="0">No</option>';
+        $return_value.='<option value="1" ';
+        $return_value.=get_user_meta($user->ID, $field_name, true)==1 ? 'selected' : '';
+        $return_value.='>Yes</option>';
+        $return_value.='</select><br />';
+    }
     if ($field_type=='building' || $field_type=='department') {
 
         //get current field value
