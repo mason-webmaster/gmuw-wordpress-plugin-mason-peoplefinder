@@ -68,7 +68,6 @@ function gmuw_pf_search_form($atts = [], $content = null, $tag = ''){
     $gmuw_pf_atts = shortcode_atts(
       array(
           'display_debug_info' => false,
-          'display_mode' => 'list',
           'search' => '',
           'who' => '',
       ), $atts, $tag
@@ -79,11 +78,6 @@ function gmuw_pf_search_form($atts = [], $content = null, $tag = ''){
       $display_debug_info=$_GET['gmuw_pf_display_debug_info'];
     } else {
       $display_debug_info=$gmuw_pf_atts['display_debug_info'];
-    }
-    if(isset($_GET['gmuw_pf_display_mode']) && $_GET['gmuw_pf_display_mode']!=''){
-      $display_mode=$_GET['gmuw_pf_display_mode'];
-    } else {
-      $display_mode=$gmuw_pf_atts['display_mode'];
     }
     if(isset($_GET['gmuw_pf_search']) && $_GET['gmuw_pf_search']!=''){
       $search=$_GET['gmuw_pf_search'];
@@ -110,17 +104,12 @@ function gmuw_pf_search_form($atts = [], $content = null, $tag = ''){
     if ($display_debug_info) {
       $content.="<div class='gmuw-pf-debug-info'><p>";
       $content.="Display debug info: ".esc_html($gmuw_pf_atts['display_debug_info']." / ".$_GET['gmuw_pf_display_debug_info']. " / " . $display_debug_info) ."<br />";
-      $content.="Display mode: ".esc_html($gmuw_pf_atts['display_mode']." / ".$_GET['gmuw_pf_display_mode']. " / " . $display_mode) ."<br />";
       $content.="Search string: ".esc_html($gmuw_pf_atts['search']." / ".$_GET['gmuw_pf_search']. " / " . $search) ."<br />";
       $content.="Who: ".esc_html($gmuw_pf_atts['who']." / ".$_GET['gmuw_pf_who']. " / " . $who) ."<br />";
       $content.="</p></div>";
     }
 
     $content.="<form name='pf-search-form'>";
-
-    // Hidden fields
-    //display mode
-    $content.="<input type='hidden' name='gmuw_pf_display_mode' value='".$display_mode."'>";
 
     // Start form controls div
     $content.="<div class='pf-search-form-controls'>";
@@ -174,7 +163,6 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
     $gmuw_pf_atts = shortcode_atts(
       array(
           'display_debug_info' => false,
-          'display_mode' => 'list',
           'search' => '',
           'who' => '',
       ), $atts, $tag
@@ -185,11 +173,6 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
       $display_debug_info=$_GET['gmuw_pf_display_debug_info'];
     } else {
       $display_debug_info=$gmuw_pf_atts['display_debug_info'];
-    }
-    if(isset($_GET['gmuw_pf_display_mode']) && $_GET['gmuw_pf_display_mode']!=''){
-      $display_mode=$_GET['gmuw_pf_display_mode'];
-    } else {
-      $display_mode=$gmuw_pf_atts['display_mode'];
     }
     if(isset($_GET['gmuw_pf_search']) && $_GET['gmuw_pf_search']!=''){
       $search=$_GET['gmuw_pf_search'];
@@ -221,7 +204,6 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
     if ($display_debug_info) {
       $content.="<div class='gmuw-pf-debug-info'><p>";
       $content.="Display debug info: ".esc_html($gmuw_pf_atts['display_debug_info']." / ".$_GET['gmuw_pf_display_debug_info']. " / " . $display_debug_info) ."<br />";
-      $content.="Display mode: ".esc_html($gmuw_pf_atts['display_mode']." / ".$_GET['gmuw_pf_display_mode']. " / " . $display_mode) ."<br />";
       $content.="Search string: ".esc_html($gmuw_pf_atts['search']." / ".$_GET['gmuw_pf_search']. " / " . $search) ."<br />";
       $content.="Who: ".esc_html($gmuw_pf_atts['who']." / ".$_GET['gmuw_pf_who']. " / " . $who) ."<br />";
       $content.="</p></div>";
