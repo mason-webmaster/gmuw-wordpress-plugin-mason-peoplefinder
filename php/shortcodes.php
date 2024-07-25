@@ -410,7 +410,10 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
     //get posts which match this search term
     $myposts = get_posts(
       array(
+        'numberposts' => -1,
         'post_type'  => 'department',
+        'order' => 'ASC',
+        'orderby' => 'title',
         'meta_query' => array(
           array(
             'key' => 'search_key',
