@@ -197,6 +197,12 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
     return;
   }
 
+  //is the search a phone number?
+  if (preg_match("/^[0-9.\-() ]+$/i", $search)) {
+    //remove non-digit characters from search string
+    $search = preg_replace("/[^0-9]/", '', $search);
+  }
+
   //Build output
     $content.="<div class='pf-search-results'>";
 
