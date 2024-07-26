@@ -327,8 +327,16 @@ function gmuw_pf_display_page_admin_user_search_keys() {
         foreach ($pf_fields as $pf_field) {
             //should we include this field in the search key?
             if (!in_array($pf_field[1],$exclude_from_search_key)) {
-                //are we a department term relation field?
+                //add to search key based on type of field
                 switch ($pf_field[1]) {
+                    case 'pf_name':
+                        //add approved name field value in a couple formate
+                        $myname=get_user_meta($myuser->ID, $pf_field[1].'_approved', true );
+                        $myname_normalized_array=explode(",", $myname);
+                        $myname_normalized=trim($myname_normalized_array[1]) . ' ' . trim($myname_normalized_array[0]);
+                        $search_key_value .= $myname . ' ';
+                        $search_key_value .= $myname_normalized . ' ';
+						break;
                     case 'pf_department':
                     case 'pf_department_2':
                     case 'pf_affiliation':
