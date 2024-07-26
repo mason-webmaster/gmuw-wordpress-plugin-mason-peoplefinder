@@ -295,7 +295,8 @@ function gmuw_pf_display_page_admin_user_search_keys() {
     $myusers = get_users(
       array(
         'role' => 'subscriber',
-        'number' => 1000,
+        'number' => 500,
+        'offset' => 0, //increase this to do batches
         'paged' => 1,
         'orderby' => 'ID',
       )
