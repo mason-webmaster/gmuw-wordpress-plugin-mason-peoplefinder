@@ -420,8 +420,12 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
               if (!empty($myuser->pf_building_approved)) {
                 $content.=sanitize_text_field(get_term_by('id', $myuser->pf_building_approved, 'building')->name);
               }
+              //if we have a room or building, add a comma-space before mailstop
+              if (!empty($myuser->pf_room_approved) || !empty($myuser->pf_building_approved)) {
+                $content.=', ';
+              }
               if (!empty($myuser->pf_mailstop_approved)) {
-                $content.=', MSN '.sanitize_text_field($myuser->pf_mailstop_approved);
+                $content.='MSN '.sanitize_text_field($myuser->pf_mailstop_approved);
               }
               $content.='<br />';
             }
@@ -450,8 +454,12 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
               if (!empty($myuser->pf_building_2_approved)) {
                 $content.=sanitize_text_field(get_term_by('id', $myuser->pf_building_2_approved, 'building')->name);
               }
+              //if we have a room or building, add a comma-space before mailstop
+              if (!empty($myuser->pf_room_2_approved) || !empty($myuser->pf_building_2_approved)) {
+                $content.=', ';
+              }
               if (!empty($myuser->pf_mailstop_2_approved)) {
-                $content.=', MSN '.sanitize_text_field($myuser->pf_mailstop_2_approved);
+                $content.='MSN '.sanitize_text_field($myuser->pf_mailstop_2_approved);
               }
               $content.='<br />';
             }
