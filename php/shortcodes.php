@@ -311,8 +311,6 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
   //should we show faculty results?
   if ($who=='everyone' || $who=='facstaff') {
 
-    $content .= '<h4>Faculty/Staff</h4>';
-
     //get users who match this search term...
 
     //begin to define define get_users meta query array
@@ -383,103 +381,111 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
       )
     );
 
-    //loop through users
-    foreach ($myusers as $myuser) {
+    //do we have users to display?
+    if ($myusers) {
 
-      //if this user is not supposed to be hidden
-      if (!$myuser->pf_hide) {
+      //display faculty/staff heading
+      $content .= '<h4>Faculty/Staff</h4>';
 
-        $content.='<p>';
+      //loop through users
+      foreach ($myusers as $myuser) {
 
-        //$content.='ID: ' . $myuser->ID . '<br />';
+        //if this user is not supposed to be hidden
+        if (!$myuser->pf_hide) {
 
-        $content.='<span class="pf-search-results-name">' . sanitize_text_field($myuser->pf_name) . '</span><br />';
+          $content.='<p>';
 
-        if (!empty($myuser->pf_title_approved)) {
-          $content.=sanitize_text_field($myuser->pf_title_approved) . '<br />';
-        }
+          //$content.='ID: ' . $myuser->ID . '<br />';
 
-        if (!empty($myuser->pf_department_approved)) {
-          $content.=sanitize_text_field(get_term_by('id', $myuser->pf_department_approved, 'department')->name) . '<br />';
-        }
+          $content.='<span class="pf-search-results-name">' . sanitize_text_field($myuser->pf_name) . '</span><br />';
 
-        if (!empty($myuser->pf_affiliation_approved)) {
-          $content.=sanitize_text_field(get_term_by('id', $myuser->pf_affiliation_approved, 'department')->name) . '<br />';
-        }
+          if (!empty($myuser->pf_title_approved)) {
+            $content.=sanitize_text_field($myuser->pf_title_approved) . '<br />';
+          }
 
-        //location, if not set to hide locations
-        if (!$myuser->pf_hide_location) {
-          if (!empty($myuser->pf_room_approved) || !empty($myuser->pf_building_approved) || !empty($myuser->pf_mailstop_approved)) {
-            if (!empty($myuser->pf_room_approved)) {
-              $content.=sanitize_text_field($myuser->pf_room_approved) . ' ';
+          if (!empty($myuser->pf_department_approved)) {
+            $content.=sanitize_text_field(get_term_by('id', $myuser->pf_department_approved, 'department')->name) . '<br />';
+          }
+
+          if (!empty($myuser->pf_affiliation_approved)) {
+            $content.=sanitize_text_field(get_term_by('id', $myuser->pf_affiliation_approved, 'department')->name) . '<br />';
+          }
+
+          //location, if not set to hide locations
+          if (!$myuser->pf_hide_location) {
+            if (!empty($myuser->pf_room_approved) || !empty($myuser->pf_building_approved) || !empty($myuser->pf_mailstop_approved)) {
+              if (!empty($myuser->pf_room_approved)) {
+                $content.=sanitize_text_field($myuser->pf_room_approved) . ' ';
+              }
+              if (!empty($myuser->pf_building_approved)) {
+                $content.=sanitize_text_field(get_term_by('id', $myuser->pf_building_approved, 'building')->name);
+              }
+              if (!empty($myuser->pf_mailstop_approved)) {
+                $content.=', MSN '.sanitize_text_field($myuser->pf_mailstop_approved);
+              }
+              $content.='<br />';
             }
-            if (!empty($myuser->pf_building_approved)) {
-              $content.=sanitize_text_field(get_term_by('id', $myuser->pf_building_approved, 'building')->name);
-            }
-            if (!empty($myuser->pf_mailstop_approved)) {
-              $content.=', MSN '.sanitize_text_field($myuser->pf_mailstop_approved);
-            }
+          }
+
+          if (!empty($myuser->pf_title_2_approved)) {
             $content.='<br />';
+            $content.=sanitize_text_field($myuser->pf_title_2_approved) . '<br />';
           }
-        }
 
-        if (!empty($myuser->pf_title_2_approved)) {
-          $content.='<br />';
-          $content.=sanitize_text_field($myuser->pf_title_2_approved) . '<br />';
-        }
+          if (!empty($myuser->pf_department_2_approved)) {
+            $content.=sanitize_text_field(get_term_by('id', $myuser->pf_department_2_approved, 'department')->name) . '<br />';
+          }
 
-        if (!empty($myuser->pf_department_2_approved)) {
-          $content.=sanitize_text_field(get_term_by('id', $myuser->pf_department_2_approved, 'department')->name) . '<br />';
-        }
+          if (!empty($myuser->pf_affiliation_2_approved)) {
+            $content.=sanitize_text_field(get_term_by('id', $myuser->pf_affiliation_2_approved, 'department')->name) . '<br />';
+          }
 
-        if (!empty($myuser->pf_affiliation_2_approved)) {
-          $content.=sanitize_text_field(get_term_by('id', $myuser->pf_affiliation_2_approved, 'department')->name) . '<br />';
-        }
+          //location2, if not set to hide locations
+          if (!$myuser->pf_hide_location) {
 
-        //location2, if not set to hide locations
-        if (!$myuser->pf_hide_location) {
-
-          if (!empty($myuser->pf_room_2_approved) || !empty($myuser->pf_building_2_approved) || !empty($myuser->pf_mailstop_2_approved)) {
-            if (!empty($myuser->pf_room_2_approved)) {
-              $content.=sanitize_text_field($myuser->pf_room_2_approved) . ' ';
+            if (!empty($myuser->pf_room_2_approved) || !empty($myuser->pf_building_2_approved) || !empty($myuser->pf_mailstop_2_approved)) {
+              if (!empty($myuser->pf_room_2_approved)) {
+                $content.=sanitize_text_field($myuser->pf_room_2_approved) . ' ';
+              }
+              if (!empty($myuser->pf_building_2_approved)) {
+                $content.=sanitize_text_field(get_term_by('id', $myuser->pf_building_2_approved, 'building')->name);
+              }
+              if (!empty($myuser->pf_mailstop_2_approved)) {
+                $content.=', MSN '.sanitize_text_field($myuser->pf_mailstop_2_approved);
+              }
+              $content.='<br />';
             }
-            if (!empty($myuser->pf_building_2_approved)) {
-              $content.=sanitize_text_field(get_term_by('id', $myuser->pf_building_2_approved, 'building')->name);
+
+          }
+
+          //show phone numbers, if not set to hide them
+          if (!$myuser->pf_hide_phonenumbers) {
+            if (!empty($myuser->pf_phone_approved)) {
+                $content.='Phone: ' . gmuw_pf_format_phone_number(sanitize_text_field($myuser->pf_phone_approved)) . '<br />';
             }
-            if (!empty($myuser->pf_mailstop_2_approved)) {
-              $content.=', MSN '.sanitize_text_field($myuser->pf_mailstop_2_approved);
-            }
-            $content.='<br />';
-          }
 
-        }
-
-        //show phone numbers, if not set to hide them
-        if (!$myuser->pf_hide_phonenumbers) {
-          if (!empty($myuser->pf_phone_approved)) {
-              $content.='Phone: ' . gmuw_pf_format_phone_number(sanitize_text_field($myuser->pf_phone_approved)) . '<br />';
-          }
-
-          if (!empty($myuser->pf_fax_approved)) {
-            $content.='Fax: ' . gmuw_pf_format_phone_number(sanitize_text_field($myuser->pf_fax_approved)) . '<br />';
-          }
-        }
-
-        //show email address, if not set to hide it
-        if (!$myuser->pf_hide_email) {
-          // if we are in the Mason IP range, show the email address
-          if (gmuw_pf_ip_in_mason_range($_SERVER['REMOTE_ADDR'])) {
-            if (!empty($myuser->pf_email_approved)) {
-              $content.='Email: <a href="mailto:'.sanitize_email($myuser->pf_email_approved).'">' . sanitize_email($myuser->pf_email_approved) . '</a><br />';
+            if (!empty($myuser->pf_fax_approved)) {
+              $content.='Fax: ' . gmuw_pf_format_phone_number(sanitize_text_field($myuser->pf_fax_approved)) . '<br />';
             }
           }
-        }
 
-        if (!empty($myuser->pf_pronouns_approved)) {
-          $content.='Pronouns: ' . sanitize_text_field($myuser->pf_pronouns_approved) . '<br />';
-        }
+          //show email address, if not set to hide it
+          if (!$myuser->pf_hide_email) {
+            // if we are in the Mason IP range, show the email address
+            if (gmuw_pf_ip_in_mason_range($_SERVER['REMOTE_ADDR'])) {
+              if (!empty($myuser->pf_email_approved)) {
+                $content.='Email: <a href="mailto:'.sanitize_email($myuser->pf_email_approved).'">' . sanitize_email($myuser->pf_email_approved) . '</a><br />';
+              }
+            }
+          }
 
-        $content.='</p>';
+          if (!empty($myuser->pf_pronouns_approved)) {
+            $content.='Pronouns: ' . sanitize_text_field($myuser->pf_pronouns_approved) . '<br />';
+          }
+
+          $content.='</p>';
+
+        }
 
       }
 
@@ -489,8 +495,6 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 
   //should we show student results?
   if ($who=='everyone' || $who=='students') {
-
-    $content .= '<h4>Students</h4>';
 
     //get globals
     global $wpdb;
@@ -503,6 +507,9 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 
     //do we have student reults?
     if ( $student_results ) {
+
+      //display students heading
+      $content .= '<h4>Students</h4>';
 
       //loop through student results
       foreach($student_results as $student_result){
