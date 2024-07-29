@@ -229,6 +229,85 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
   $content .= 'Your searched for &ldquo;<em>'.sanitize_text_field($search).'</em>&rdquo; in &ldquo;<em>'.$who.'</em>&rdquo;.';
   $content .= '</p>';
 
+  //should we show department results?
+  if ($who=='everyone' || $who=='departments') {
+
+    //get posts which match this search term
+    $myposts = get_posts(
+      array(
+        'numberposts' => -1,
+        'post_type'  => 'department',
+        'order' => 'ASC',
+        'orderby' => 'title',
+        'meta_query' => array(
+          array(
+            'key' => 'search_key',
+            'value' => $search,
+            'compare' => 'LIKE'
+          )
+        )
+      )
+    );
+
+    //do we have posts?
+    if ($myposts) {
+
+      //departments heading
+      $content .= '<h4>Departments</h4>';
+
+      //loop through posts
+      foreach ($myposts as $mypost) {
+
+        $content.='<p>';
+
+        //$content.='ID: ' . $mypost->ID . '<br />';
+
+        $content.='<span class="pf-search-results-name">' . sanitize_text_field($mypost->post_title) . '</span><br />';
+
+        if (!empty($mypost->acronym)) {
+          $content.=sanitize_text_field($mypost->acronym) . '<br />';
+        }
+
+
+        //location
+        if (!empty($mypost->room_number) || !empty($mypost->building) || !empty($mypost->pf_mailstop_approved)) {
+          if (!empty($mypost->room_number)) {
+            $content.=sanitize_text_field($mypost->room_number) . ' ';
+          }
+          if (!empty($mypost->building_id)) {
+              if (ctype_digit($mypost->building_id)) {
+                  $content.=sanitize_text_field(get_term($mypost->building_id)->name);
+              }
+          }
+          if (!empty($mypost->mail_stop_number)) {
+            $content.=', MSN '.sanitize_text_field($mypost->mail_stop_number);
+          }
+          $content.='<br />';
+        }
+
+        if (!empty($mypost->phone_number)) {
+            $content.='Phone: ' . gmuw_pf_format_phone_number(sanitize_text_field($mypost->phone_number)) . '<br />';
+        }
+
+        if (!empty($mypost->fax_number)) {
+          $content.='Fax: ' . gmuw_pf_format_phone_number(sanitize_text_field($mypost->fax_number)) . '<br />';
+        }
+
+        // if we are in the Mason IP range, show the email address
+        if (gmuw_pf_ip_in_mason_range($_SERVER['REMOTE_ADDR'])) {
+          if (!empty($mypost->contact_email)) {
+            $content.='Email: <a href="mailto:'.sanitize_email($mypost->contact_email).'">' . sanitize_email($mypost->contact_email) . '</a><br />';
+          }
+        }
+
+        $content.='</p>';
+
+      }
+
+    }
+
+  }
+
   //should we show faculty results?
   if ($who=='everyone' || $who=='facstaff') {
 
@@ -403,79 +482,6 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
         $content.='</p>';
 
       }
-
-    }
-
-  }
-
-  //should we show department results?
-  if ($who=='everyone' || $who=='departments') {
-
-    $content .= '<h4>Departments</h4>';
-
-    //get posts which match this search term
-    $myposts = get_posts(
-      array(
-        'numberposts' => -1,
-        'post_type'  => 'department',
-        'order' => 'ASC',
-        'orderby' => 'title',
-        'meta_query' => array(
-          array(
-            'key' => 'search_key',
-            'value' => $search,
-            'compare' => 'LIKE'
-          )
-        )
-      )
-    );
-
-    //loop through posts
-    foreach ($myposts as $mypost) {
-
-      $content.='<p>';
-
-      //$content.='ID: ' . $mypost->ID . '<br />';
-
-      $content.='<span class="pf-search-results-name">' . sanitize_text_field($mypost->post_title) . '</span><br />';
-
-      if (!empty($mypost->acronym)) {
-        $content.=sanitize_text_field($mypost->acronym) . '<br />';
-      }
-
-
-      //location
-      if (!empty($mypost->room_number) || !empty($mypost->building) || !empty($mypost->pf_mailstop_approved)) {
-        if (!empty($mypost->room_number)) {
-          $content.=sanitize_text_field($mypost->room_number) . ' ';
-        }
-        if (!empty($mypost->building_id)) {
-            if (ctype_digit($mypost->building_id)) {
-                $content.=sanitize_text_field(get_term($mypost->building_id)->name);
-            }
-        }
-        if (!empty($mypost->mail_stop_number)) {
-          $content.=', MSN '.sanitize_text_field($mypost->mail_stop_number);
-        }
-        $content.='<br />';
-      }
-
-      if (!empty($mypost->phone_number)) {
-          $content.='Phone: ' . gmuw_pf_format_phone_number(sanitize_text_field($mypost->phone_number)) . '<br />';
-      }
-
-      if (!empty($mypost->fax_number)) {
-        $content.='Fax: ' . gmuw_pf_format_phone_number(sanitize_text_field($mypost->fax_number)) . '<br />';
-      }
-
-      // if we are in the Mason IP range, show the email address
-      if (gmuw_pf_ip_in_mason_range($_SERVER['REMOTE_ADDR'])) {
-        if (!empty($mypost->contact_email)) {
-          $content.='Email: <a href="mailto:'.sanitize_email($mypost->contact_email).'">' . sanitize_email($mypost->contact_email) . '</a><br />';
-        }
-      }
-
-      $content.='</p>';
 
     }
 
