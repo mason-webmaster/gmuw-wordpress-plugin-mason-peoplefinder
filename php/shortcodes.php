@@ -547,6 +547,11 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
 
   }
 
+  //if we have no results at all, display message
+  if (!$myposts && !$myusers && !$student_results) {
+    $content.="<p>No results found.</p>";
+  }
+
   //finish output
   $content.="</div>";
 
