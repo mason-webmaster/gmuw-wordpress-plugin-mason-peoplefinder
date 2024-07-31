@@ -423,8 +423,8 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
               if (!empty($myuser->pf_building_approved)) {
                 $content.=sanitize_text_field(get_term_by('id', $myuser->pf_building_approved, 'building')->name);
               }
-              //if we have a room or building, add a comma-space before mailstop
-              if (!empty($myuser->pf_room_approved) || !empty($myuser->pf_building_approved)) {
+              //if we have a room or building, AND we have a mailstop, add a comma-space before mailstop
+              if ((!empty($myuser->pf_room_approved) || !empty($myuser->pf_building_approved)) && !empty($myuser->pf_mailstop_approved)) {
                 $content.=', ';
               }
               if (!empty($myuser->pf_mailstop_approved)) {
