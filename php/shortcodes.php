@@ -94,6 +94,9 @@ function gmuw_pf_search_form($atts = [], $content = null, $tag = ''){
     // convert literal string 'false' to boolean false, so that it doesn't evaluate to true (being non-empty)
     if ($display_debug_info=='false') $display_debug_info=false;
 
+  // fix search string for single quotes
+    $search=str_replace("\'","'",$search);
+
   //Initialize output variable
     $content="";
 
@@ -119,7 +122,7 @@ function gmuw_pf_search_form($atts = [], $content = null, $tag = ''){
 
     //name search
     $content.="<label for='input-gmuw_pf_search'>Name:</label>";
-    $content.="<input type='text' name='gmuw_pf_search' id='input-gmuw_pf_search' placeholder='Search...' value='".$search."' />";
+    $content.="<input type='text' name='gmuw_pf_search' id='input-gmuw_pf_search' placeholder='Search...' value='".esc_attr($search)."' />";
 
     //person type
     $content.="<label for='input-gmuw_pf_who'>Who:</label>";
@@ -188,6 +191,9 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
   // Fix boolean attributes
     // convert literal string 'false' to boolean false, so that it doesn't evaluate to true (being non-empty)
     if ($display_debug_info=='false') $display_debug_info=false;
+
+  // fix search string for single quotes
+    $search=str_replace("\'","'",$search);
 
   //Initialize output variable
     $content="";
@@ -514,7 +520,7 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
     $student_table_name = $wpdb->prefix . 'gmuw_pf_students';
 
     //get student results
-    $student_results = $wpdb->get_results( $wpdb->prepare("SELECT * FROM ".$student_table_name." WHERE student_name LIKE '%".$search."%' ORDER BY student_name;" ) );
+    $student_results = $wpdb->get_results( $wpdb->prepare("SELECT * FROM ".$student_table_name." WHERE student_name LIKE '%".str_replace("'","\'",$search)."%' ORDER BY student_name;" ) );
 
     //do we have student reults?
     if ( $student_results ) {
