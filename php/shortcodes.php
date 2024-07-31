@@ -94,6 +94,9 @@ function gmuw_pf_search_form($atts = [], $content = null, $tag = ''){
     // convert literal string 'false' to boolean false, so that it doesn't evaluate to true (being non-empty)
     if ($display_debug_info=='false') $display_debug_info=false;
 
+  //fix search string for fancy single quote
+    $search=str_replace("’","'",$search);
+
   // fix search string for single quotes
     $search=str_replace("\'","'",$search);
 
@@ -191,6 +194,9 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
   // Fix boolean attributes
     // convert literal string 'false' to boolean false, so that it doesn't evaluate to true (being non-empty)
     if ($display_debug_info=='false') $display_debug_info=false;
+
+  //fix search string for fancy single quote
+    $search=str_replace("’","'",$search);
 
   // fix search string for single quotes
     $search=str_replace("\'","'",$search);
