@@ -377,6 +377,9 @@ function gmuw_pf_results($atts = [], $content = null, $tag = ''){
     //get users
     $myusers = get_users(
       array(
+        'orderby' => 'meta_value',
+        'order' => 'ASC',
+        'meta_key' => 'pf_name',
         'meta_query' => $users_meta_query_array,
       )
     );
