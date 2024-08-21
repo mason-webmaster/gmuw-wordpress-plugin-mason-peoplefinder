@@ -309,10 +309,8 @@ function gmuw_pf_display_page_admin_user_search_keys() {
     $exclude_from_search_key=array(
         'pf_building',
         'pf_room',
-        'pf_mailstop',
         'pf_building_2',
         'pf_room_2',
-        'pf_mailstop_2',
         'pf_pronouns',
     );
 
@@ -338,6 +336,13 @@ function gmuw_pf_display_page_admin_user_search_keys() {
                         $search_key_value .= $myname . ' ';
                         $search_key_value .= $myname_normalized . ' ';
 						break;
+                    case 'pf_mailstop':
+                    case 'pf_mailstop_2':
+                        //if not empty, add approved field value with MSN prefix
+                        if (!empty(get_user_meta($myuser->ID, $pf_field[1].'_approved', true ))) {
+                            $search_key_value .= 'MSN'.get_user_meta($myuser->ID, $pf_field[1].'_approved', true ) . ' ' . 'MSN '.get_user_meta($myuser->ID, $pf_field[1].'_approved', true ) . ' ';
+                        }
+                        break;
                     case 'pf_department':
                     case 'pf_department_2':
                     case 'pf_affiliation':

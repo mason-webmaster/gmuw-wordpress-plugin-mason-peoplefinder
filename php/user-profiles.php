@@ -330,10 +330,8 @@ function gmuw_pf_save_extra_user_profile_fields( $user_id ) {
         $exclude_from_search_key=array(
             'pf_building',
             'pf_room',
-            'pf_mailstop',
             'pf_building_2',
             'pf_room_2',
-            'pf_mailstop_2',
             'pf_pronouns',
         );
         
@@ -350,6 +348,13 @@ function gmuw_pf_save_extra_user_profile_fields( $user_id ) {
                         $myname_normalized=trim($myname_normalized_array[1]) . ' ' . trim($myname_normalized_array[0]);
                         $search_key_value .= $myname . ' ';
                         $search_key_value .= $myname_normalized . ' ';
+                        break;
+                    case 'pf_mailstop':
+                    case 'pf_mailstop_2':
+                        //if not empty, add approved field value with MSN prefix
+                        if (!empty($_POST[$pf_field[1].'_approved'])) {
+                            $search_key_value .= 'MSN'.$_POST[$pf_field[1].'_approved'] . ' ' . 'MSN '.$_POST[$pf_field[1].'_approved'] . ' ';
+                        }
                         break;
                     case 'pf_department':
                     case 'pf_department_2':
