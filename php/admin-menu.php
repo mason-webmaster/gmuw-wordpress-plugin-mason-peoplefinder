@@ -45,7 +45,7 @@ if (!function_exists('gmuj_add_admin_menu_mason')) {
 /**
  * Adds link to plugin settings page to Wordpress admin menu as a sub-menu item under Mason
  */
-add_action('admin_menu', 'gmuw_pf_add_sublevel_menu');
+//add_action('admin_menu', 'gmuw_pf_add_sublevel_menu');
 function gmuw_pf_add_sublevel_menu() {
 	
 	// Add Wordpress admin menu item under Mason for this plugin's settings
