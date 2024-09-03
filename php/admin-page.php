@@ -120,7 +120,8 @@ function gmuw_pf_display_page_admin_search() {
 	echo '<br />';
 
 	// recently_updated form
-	echo '<form method="post" action="admin.php?page=gmuw_pf_admin_search" />';
+	echo '<form method="get">';
+	echo '<input name="page" value="gmuw_pf_admin_search" type="hidden" />';
 
 	//submit button
 	echo '<p><button name="submit" type="submit" value="recently_updated" />Recently Updated</button></p>';
@@ -130,7 +131,8 @@ function gmuw_pf_display_page_admin_search() {
 	echo '<br />';
 
 	// building form
-	echo '<form method="post" action="admin.php?page=gmuw_pf_admin_search" />';
+	echo '<form method="get">';
+	echo '<input name="page" value="gmuw_pf_admin_search" type="hidden" />';
 
 	echo '<p>';
 	echo '<select name="gmuw_term_id_building">';
@@ -155,7 +157,8 @@ function gmuw_pf_display_page_admin_search() {
 	echo '<br />';
 
 	// department form
-	echo '<form method="post" action="admin.php?page=gmuw_pf_admin_search" />';
+	echo '<form method="get">';
+	echo '<input name="page" value="gmuw_pf_admin_search" type="hidden" />';
 
 	echo '<p>';
 	echo '<select name="gmuw_term_id_department">';
@@ -179,11 +182,11 @@ function gmuw_pf_display_page_admin_search() {
 	echo '<br />';
 
 	//process form if submitted
-	if (isset($_POST['submit'])) {
+	if (isset($_GET['submit'])) {
 
 		//We have a form submission. Proceed...
 
-		if ($_POST['submit']=='recently_updated') {
+		if ($_GET['submit']=='recently_updated') {
 			echo '<h2>Results: Recently Updated (Top 300 Most Recent)</h2>';
 
 			//get users
@@ -199,15 +202,15 @@ function gmuw_pf_display_page_admin_search() {
 
 		}
 
-		if ($_POST['submit']=='building') {
+		if ($_GET['submit']=='building') {
 			echo '<h2>Results: Building</h2>';
 
 			//assume no building
 			$building_id='';
 
 			// do we have a building?
-			if (preg_match('/^-?\d+$/', $_POST['gmuw_term_id_building']) ) {
-				$building_id = (int)$_POST['gmuw_term_id_building'];
+			if (preg_match('/^-?\d+$/', $_GET['gmuw_term_id_building']) ) {
+				$building_id = (int)$_GET['gmuw_term_id_building'];
 			}
 
 			if (empty($building_id)) {
@@ -232,15 +235,15 @@ function gmuw_pf_display_page_admin_search() {
 
 		}
 
-		if ($_POST['submit']=='department') {
+		if ($_GET['submit']=='department') {
 			echo '<h2>Results: Department</h2>';
 
 			//assume no department
 			$department_id='';
 
 			// do we have a department?
-			if (preg_match('/^-?\d+$/', $_POST['gmuw_term_id_department']) ) {
-				$department_id = (int)$_POST['gmuw_term_id_department'];
+			if (preg_match('/^-?\d+$/', $_GET['gmuw_term_id_department']) ) {
+				$department_id = (int)$_GET['gmuw_term_id_department'];
 			}
 
 			if (empty($department_id)) {
