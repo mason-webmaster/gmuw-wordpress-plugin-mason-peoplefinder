@@ -517,7 +517,6 @@ function gmuw_pf_kioskreport_departments(){
 		//table header
 		$content.='<thead>';
 		$content.='<tr>';
-		$content.='<th>post_id</th>';
 		$content.='<th>department</th>';
 		$content.='<th>acronym</th>';
 		$content.='<th>room</th>';
@@ -526,6 +525,7 @@ function gmuw_pf_kioskreport_departments(){
 		$content.='<th>phone</th>';
 		$content.='<th>fax</th>';
 		$content.='<th>email</th>';
+		$content.='<th>post_id</th>';
 		$content.='</tr>';
 		$content.='</thead>';
 
@@ -537,7 +537,6 @@ function gmuw_pf_kioskreport_departments(){
 
 			//output data row
 	    $content.='<tr>';
-	    $content.='<td>' . $mypost->ID . '</td>';
 	    $content.='<td>' . sanitize_text_field($mypost->post_title) . '</td>';
 	    $content.='<td>' . sanitize_text_field($mypost->acronym) . '</td>';
 			$content.='<td>' . sanitize_text_field($mypost->room_number) . '</td>';
@@ -546,6 +545,7 @@ function gmuw_pf_kioskreport_departments(){
 			$content.='<td>' . gmuw_pf_format_phone_number(sanitize_text_field($mypost->phone_number)) . '</td>';
 			$content.='<td>' . gmuw_pf_format_phone_number(sanitize_text_field($mypost->fax_number)) . '</td>';
 			$content.='<td>' . sanitize_email($mypost->contact_email) . '</a></td>';
+	    $content.='<td>' . $mypost->ID . '</td>';
 	    $content.='</tr>';
 
 	  }
