@@ -84,7 +84,7 @@ function gmuw_pf_user_search_get_users($mode,$search_id=null){
 
 }
 
-function gmuw_pf_show_admin_users_search_results($myusers){
+function gmuw_pf_show_admin_users_search_results($myusers,$hideinfo=false){
 
 	/*
 	fields:
@@ -180,18 +180,65 @@ function gmuw_pf_show_admin_users_search_results($myusers){
 
 	//loop through users
 	foreach($myusers as $myuser){
+
+		//if this user is supposed to be hidden, skip outputting it
+		if ($hideinfo && $myuser->pf_hide) {
+			//output placeholder (but do include the record post ID)
+			$return_value.='<tr>';
+			$return_value.='<td>'.$myuser->ID.'</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='</tr>';
+			//skip rest of loop
+			continue;
+		}
+
 		$return_value.='<tr>';
 		$return_value.='<td>'.$myuser->ID.'</td>';
 		//$return_value.='<td>'.$myuser->pf_name.'</td>';
 		$return_value.='<td>'.$myuser->pf_name_approved.'</td>';
 		//$return_value.='<td>'.$myuser->pf_pronouns.'</td>';
 		$return_value.='<td>'.$myuser->pf_pronouns_approved.'</td>';
-		//$return_value.='<td>'.$myuser->pf_email.'</td>';
-		$return_value.='<td>'.$myuser->pf_email_approved.'</td>';
-		//$return_value.='<td>'.$myuser->pf_phone.'</td>';
-		$return_value.='<td>'.$myuser->pf_phone_approved.'</td>';
-		//$return_value.='<td>'.$myuser->pf_fax.'</td>';
-		$return_value.='<td>'.$myuser->pf_fax_approved.'</td>';
+
+		//should we hide email?
+		if ($hideinfo && $myuser->pf_hide_email) {
+			//hide email fields
+			$return_value.='<td>----</td>';
+		} else {
+			//show email fields
+			//$return_value.='<td>'.$myuser->pf_email.'</td>';
+			$return_value.='<td>'.$myuser->pf_email_approved.'</td>';
+		}
+
+		//should we hide phone numbers?
+		if ($hideinfo && $myuser->pf_hide_phonenumbers) {
+			//hide phone numbers fields
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+		} else {
+			//show phone numbers fields
+			//$return_value.='<td>'.$myuser->pf_phone.'</td>';
+			$return_value.='<td>'.$myuser->pf_phone_approved.'</td>';
+			//$return_value.='<td>'.$myuser->pf_fax.'</td>';
+			$return_value.='<td>'.$myuser->pf_fax_approved.'</td>';
+		}
+
 		//$return_value.='<td>'.$myuser->pf_title.'</td>';
 		$return_value.='<td>'.$myuser->pf_title_approved.'</td>';
 		//$return_value.='<td>'.$myuser->pf_department.'</td>';
@@ -208,17 +255,28 @@ function gmuw_pf_show_admin_users_search_results($myusers){
 			$return_value.=get_term_by('id', $myuser->pf_affiliation_approved, 'department')->name;
 		}
 		$return_value.='</td>';
-		//$return_value.='<td>'.$myuser->pf_building.'</td>';
-		//$return_value.='<td>'.$myuser->pf_building_approved.'</td>';
-		$return_value.='<td>';
-		if (!empty($myuser->pf_building_approved)) {
-			$return_value.=get_term_by('id', $myuser->pf_building_approved, 'building')->name;
+
+		//should we hide location?
+		if ($hideinfo && $myuser->pf_hide_location) {
+			//hide location fields
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+		} else {
+			//show location fields
+			//$return_value.='<td>'.$myuser->pf_building.'</td>';
+			//$return_value.='<td>'.$myuser->pf_building_approved.'</td>';
+			$return_value.='<td>';
+			if (!empty($myuser->pf_building_approved)) {
+				$return_value.=get_term_by('id', $myuser->pf_building_approved, 'building')->name;
+			}
+			$return_value.='</td>';
+			//$return_value.='<td>'.$myuser->pf_room.'</td>';
+			$return_value.='<td>'.$myuser->pf_room_approved.'</td>';
+			//$return_value.='<td>'.$myuser->pf_mailstop.'</td>';
+			$return_value.='<td>'.$myuser->pf_mailstop_approved.'</td>';
 		}
-		$return_value.='</td>';
-		//$return_value.='<td>'.$myuser->pf_room.'</td>';
-		$return_value.='<td>'.$myuser->pf_room_approved.'</td>';
-		//$return_value.='<td>'.$myuser->pf_mailstop.'</td>';
-		$return_value.='<td>'.$myuser->pf_mailstop_approved.'</td>';
+
 		//$return_value.='<td>'.$myuser->pf_title_2.'</td>';
 		$return_value.='<td>'.$myuser->pf_title_2_approved.'</td>';
 		//$return_value.='<td>'.$myuser->pf_department_2.'</td>';
@@ -235,17 +293,28 @@ function gmuw_pf_show_admin_users_search_results($myusers){
 			$return_value.=get_term_by('id', $myuser->pf_affiliation_2_approved, 'department')->name;
 		}
 		$return_value.='</td>';
-		//$return_value.='<td>'.$myuser->pf_building_2.'</td>';
-		//$return_value.='<td>'.$myuser->pf_building_2_approved.'</td>';
-		$return_value.='<td>';
-		if (!empty($myuser->pf_building_2_approved)) {
-			$return_value.=get_term_by('id', $myuser->pf_building_2_approved, 'building')->name;
+
+		//should we hide location?
+		if ($hideinfo && $myuser->pf_hide_location) {
+			//hide location fields
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+		} else {
+			//show location fields
+			//$return_value.='<td>'.$myuser->pf_building_2.'</td>';
+			//$return_value.='<td>'.$myuser->pf_building_2_approved.'</td>';
+			$return_value.='<td>';
+			if (!empty($myuser->pf_building_2_approved)) {
+				$return_value.=get_term_by('id', $myuser->pf_building_2_approved, 'building')->name;
+			}
+			$return_value.='</td>';
+			//$return_value.='<td>'.$myuser->pf_room_2.'</td>';
+			$return_value.='<td>'.$myuser->pf_room_2_approved.'</td>';
+			//$return_value.='<td>'.$myuser->pf_mailstop_2.'</td>';
+			$return_value.='<td>'.$myuser->pf_mailstop_2_approved.'</td>';
 		}
-		$return_value.='</td>';
-		//$return_value.='<td>'.$myuser->pf_room_2.'</td>';
-		$return_value.='<td>'.$myuser->pf_room_2_approved.'</td>';
-		//$return_value.='<td>'.$myuser->pf_mailstop_2.'</td>';
-		$return_value.='<td>'.$myuser->pf_mailstop_2_approved.'</td>';
+
 		//$return_value.='<td>'.$myuser->pf_search_key.'</td>';
 		$return_value.='<td>'.gmuw_pf_display_last_modified_date($myuser->pf_last_updated).'</td>';
 		$return_value.='</tr>';
