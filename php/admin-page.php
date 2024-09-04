@@ -446,22 +446,29 @@ function gmuw_pf_kioskreport_facstaff(){
     )
   );
 
+  //pagination
+  $content .= '<p>';
+  //prev
+  //is this not the first page?
+  if ($page>1) {
+    $content .= '<a href="'.preg_replace('/gmuw_pf_page=\d{1,}/i','gmuw_pf_page='.$page-1,$_SERVER['REQUEST_URI']).'"><< prev</a>';
+    $content .= ' | ';
+  }
+  //current page
+  $content .= '<strong>Page '.$page.'</strong>';
+  //next
+  //have we not yet run out of records?
+  if ($myusers) {
+	  $content .= ' | ';
+	  $content .= '<a href="'.preg_replace('/gmuw_pf_page=\d{1,}/i','gmuw_pf_page='.$page+1,$_SERVER['REQUEST_URI']).'">next >></a>';
+	}
+  $content .= '</p>';
+
   //do we have users to display?
   if ($myusers) {
 
     //total users
     //$content.='<p>Total users: '.sizeof($myusers).'</p>';
-
-    //pagination
-    $content .= '<p>';
-    //prev
-    if ($page>1) {
-      $content .= '<a href="'.preg_replace('/gmuw_pf_page=\d{1,}/i','gmuw_pf_page='.$page-1,$_SERVER['REQUEST_URI']).'"><< prev</a>';
-      $content .= ' | ';
-    }
-    //next
-    $content .= '<a href="'.preg_replace('/gmuw_pf_page=\d{1,}/i','gmuw_pf_page='.$page+1,$_SERVER['REQUEST_URI']).'">next >></a>';
-    $content .= '</p>';
 
 		//show results
 		$content .= gmuw_pf_show_admin_users_search_results($myusers,true);
