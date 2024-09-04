@@ -135,7 +135,6 @@ function gmuw_pf_show_admin_users_search_results($myusers,$hideinfo=false){
 	//table header
 	$return_value.='<thead>';
 	$return_value.='<tr>';
-	$return_value.='<th>user_id</th>';
 	//$return_value.='<th>pf_name</th>';
 	$return_value.='<th>pf_name_approved</th>';
 	//$return_value.='<th>pf_pronouns</th>';
@@ -172,6 +171,7 @@ function gmuw_pf_show_admin_users_search_results($myusers,$hideinfo=false){
 	$return_value.='<th>pf_mailstop_2_approved</th>';
 	//$return_value.='<th>pf_search_key</th>';
 	$return_value.='<th>pf_last_updated</th>';
+	$return_value.='<th>user_id</th>';
 	$return_value.='</tr>';
 	$return_value.='</thead>';
 
@@ -185,32 +185,31 @@ function gmuw_pf_show_admin_users_search_results($myusers,$hideinfo=false){
 		if ($hideinfo && $myuser->pf_hide) {
 			//output placeholder (but do include the record post ID)
 			$return_value.='<tr>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
+			$return_value.='<td>----</td>';
 			$return_value.='<td>'.$myuser->ID.'</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
-			$return_value.='<td>----</td>';
 			$return_value.='</tr>';
 			//skip rest of loop
 			continue;
 		}
 
 		$return_value.='<tr>';
-		$return_value.='<td>'.$myuser->ID.'</td>';
 		//$return_value.='<td>'.$myuser->pf_name.'</td>';
 		$return_value.='<td>'.$myuser->pf_name_approved.'</td>';
 		//$return_value.='<td>'.$myuser->pf_pronouns.'</td>';
@@ -317,6 +316,7 @@ function gmuw_pf_show_admin_users_search_results($myusers,$hideinfo=false){
 
 		//$return_value.='<td>'.$myuser->pf_search_key.'</td>';
 		$return_value.='<td>'.gmuw_pf_display_last_modified_date($myuser->pf_last_updated).'</td>';
+		$return_value.='<td>'.$myuser->ID.'</td>';
 		$return_value.='</tr>';
 	}
 
