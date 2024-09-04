@@ -181,6 +181,29 @@ function gmuw_pf_display_page_admin_search() {
 
 	echo '<br />';
 
+	// kioskreport_facstaff report form
+	echo '<form method="get">';
+	echo '<input name="page" value="gmuw_pf_admin_search" type="hidden" />';
+	echo '<input name="gmuw_pf_page" value="1" type="hidden" />';
+
+	//submit button
+	echo '<p><button name="submit" type="submit" value="kioskreport_facstaff" />Kiosk Report - Faculty/Staff</button></p>';
+
+	echo '</form>';
+
+	echo '<br />';
+
+	// kioskreport_departments report form
+	echo '<form method="get">';
+	echo '<input name="page" value="gmuw_pf_admin_search" type="hidden" />';
+
+	//submit button
+	echo '<p><button name="submit" type="submit" value="kioskreport_departments" />Kiosk Report - Departments</button></p>';
+
+	echo '</form>';
+
+	echo '<br />';
+
 	//process form if submitted
 	if (isset($_GET['submit'])) {
 
@@ -265,6 +288,20 @@ function gmuw_pf_display_page_admin_search() {
 				}
 
 			}
+
+		}
+
+		if ($_GET['submit']=='kioskreport_facstaff') {
+			echo '<h2>Report: Faculty/Staff</h2>';
+
+			echo gmuw_pf_kioskreport_facstaff();
+
+		}
+
+		if ($_GET['submit']=='kioskreport_departments') {
+			echo '<h2>Report: Departments</h2>';
+
+			echo gmuw_pf_kioskreport_departments();
 
 		}
 
@@ -374,5 +411,149 @@ function gmuw_pf_display_page_admin_user_search_keys() {
 
 	// Finish HTML output
 	echo "</div>";
+
+}
+
+function gmuw_pf_kioskreport_facstaff(){
+
+  //Returns kiosk report results
+
+  //Get global variables
+    global $wpdb;
+
+  //Initialize output variable
+    $content="";
+
+  //Build output
+    $content.="<div class='pf-report-results'>";
+
+  //get users
+
+  //get page
+  $page = 1;
+  if (isset($_GET['gmuw_pf_page']) && (int)$_GET['gmuw_pf_page']>1) {
+    $page = (int)$_GET['gmuw_pf_page'];
+  }
+
+  //get users
+  $myusers = get_users(
+    array(
+      'number' => 2000,
+      'orderby' => 'meta_value',
+      'order' => 'ASC',
+      'meta_key' => 'pf_name',
+      'paged' => $page,
+    )
+  );
+
+  //do we have users to display?
+  if ($myusers) {
+
+    //total users
+    //$content.='<p>Total users: '.sizeof($myusers).'</p>';
+
+    //pagination
+    $content .= '<p>';
+    //prev
+    if ($page>1) {
+      $content .= '<a href="'.preg_replace('/gmuw_pf_page=\d{1,}/i','gmuw_pf_page='.$page-1,$_SERVER['REQUEST_URI']).'"><< prev</a>';
+      $content .= ' | ';
+    }
+    //next
+    $content .= '<a href="'.preg_replace('/gmuw_pf_page=\d{1,}/i','gmuw_pf_page='.$page+1,$_SERVER['REQUEST_URI']).'">next >></a>';
+    $content .= '</p>';
+
+		//show results
+		$content .= gmuw_pf_show_admin_users_search_results($myusers,true);
+
+  } else {
+    $content.='<p>No records to display</p>';
+  }
+
+  //finish output
+  $content.="</div>";
+
+  //Return value
+  return $content;
+
+}
+
+function gmuw_pf_kioskreport_departments(){
+
+  //Returns kiosk report results
+
+  //Get global variables
+    global $wpdb;
+
+  //Initialize output variable
+    $content="";
+
+  //Build output
+    $content.="<div class='pf-report-results'>";
+
+	//get posts
+	$myposts = get_posts(
+	  array(
+	    'numberposts' => -1,
+	    'post_type'  => 'department',
+	    'order' => 'ASC',
+	    'orderby' => 'title',
+	  )
+	);
+
+	//do we have posts?
+	if ($myposts) {
+
+		//begin table
+		$content.='<table class="data_table">';
+
+		//table header
+		$content.='<thead>';
+		$content.='<tr>';
+		$content.='<th>post_id</th>';
+		$content.='<th>department</th>';
+		$content.='<th>acronym</th>';
+		$content.='<th>room</th>';
+		$content.='<th>building</th>';
+		$content.='<th>mailstop</th>';
+		$content.='<th>phone</th>';
+		$content.='<th>fax</th>';
+		$content.='<th>email</th>';
+		$content.='</tr>';
+		$content.='</thead>';
+
+		//table body
+		$content.='<tbody>';
+
+	  //loop through posts
+	  foreach ($myposts as $mypost) {
+
+			//output data row
+	    $content.='<tr>';
+	    $content.='<td>' . $mypost->ID . '</td>';
+	    $content.='<td>' . sanitize_text_field($mypost->post_title) . '</td>';
+	    $content.='<td>' . sanitize_text_field($mypost->acronym) . '</td>';
+			$content.='<td>' . sanitize_text_field($mypost->room_number) . '</td>';
+			$content.='<td>' . sanitize_text_field(get_term($mypost->building_id)->name) . '</td>';
+			$content.='<td>' . sanitize_text_field($mypost->mail_stop_number) . '</td>';
+			$content.='<td>' . gmuw_pf_format_phone_number(sanitize_text_field($mypost->phone_number)) . '</td>';
+			$content.='<td>' . gmuw_pf_format_phone_number(sanitize_text_field($mypost->fax_number)) . '</td>';
+			$content.='<td>' . sanitize_email($mypost->contact_email) . '</a></td>';
+	    $content.='</tr>';
+
+	  }
+
+		$content.='</tbody>';
+
+		//end table
+		$content.='</table>';
+
+  }
+
+  //finish output
+  $content.="</div>";
+
+  //Return value
+  return $content;
 
 }
