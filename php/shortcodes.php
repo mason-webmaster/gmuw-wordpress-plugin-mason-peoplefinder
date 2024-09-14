@@ -304,6 +304,9 @@ function gmuw_pf_return_search_results_array_departments($search){
     //departments heading
     $content .= '<h4>Departments</h4>';
 
+    //display number of results
+    $content .= '<p class="number_results">'.sizeof($myposts).' result' . (sizeof($myposts)>1?'s':'') . '</p>';
+
     //loop through posts
     foreach ($myposts as $mypost) {
 
@@ -445,6 +448,9 @@ function gmuw_pf_return_search_results_array_facultystaff($search){
     //display faculty/staff heading
     $content .= '<h4>Faculty/Staff</h4>';
 
+    //display number of results
+    $content .= '<p class="number_results">'.sizeof($myusers).' result' . (sizeof($myusers)>1?'s':'') . '</p>';
+
     //loop through users
     foreach ($myusers as $myuser) {
 
@@ -582,6 +588,9 @@ function gmuw_pf_return_search_results_array_students($search){
 
     //display students heading
     $content .= '<h4>Students</h4>';
+
+    //display number of results
+    $content .= '<p class="number_results">'.sizeof($student_results).' result' . (sizeof($student_results)>1?'s':'') . '</p>';
 
     //loop through student results
     foreach($student_results as $student_result){
