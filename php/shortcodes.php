@@ -370,67 +370,100 @@ function gmuw_pf_return_search_results_array_facultystaff($search){
   $content='';
 
   //get users who match this search term...
+  //Ok, here is what we're going to do:
+  //1 We split the user-provided search string into separate individual terms by space characters.
+  //2 Then we loop through each term individually, using it to generate our meta query for the get_users function that we will be using to pull the results.
+  //3 For each term, we add an AND clause to our meta query to filter the users by the term.
+  //4 We search for each term in the user record in 2 ways: either in the user search_key field OR if the term matches the name of a department that the user has in the department or affiliation fields.
+  //4a So first we add the search on the users search_key field.
+  //4b Then, to check for the matching department, we first have to look up the ID numbers of any matching departments, since the user affiliation and department fields store ID numbers and not text. So we search for the search term in the names of departments in the departments taxonomy. Any that we find we add a search by id in the department and affiliation fields of the users.
+  //5 Finally, we combine the couple of arrays that we needed to use to get the full query prepared.
+  //6 Then we use the assembled meta query array to pull the results with get_users.
 
-  //begin to define define get_users meta query array
-  $users_meta_query_array=array();
-  //its going to be an OR
-  $users_meta_query_array['relation']= 'OR';
-  //between whether the search text matches the search key
-  $users_meta_query_array[]=array(
-    'key' => 'pf_search_key',
-    'value' => $search,
-    'compare' => 'LIKE'
-  );
-  //print_r($users_meta_query_array);
+  //begin to define get_users meta query array
+  $users_meta_query_array=[];
 
-  /* --disable this section if search performance is too bad-- */
-  //...and get any departments the names of which match the search term, and the ids of which occur in any of the user meta fields which link to departments...
+  //split search on space
+  $search_terms_array=(explode(' ',$search));
 
-  //get the ID numbers of departments taxonomy terms whose names match this search term
-  $my_department_result_term_ids = get_terms([
-      'taxonomy' => 'department',
-      'hide_empty' => false,
-      'name__like' => $search,
-      'fields' => 'ids'
+  //loop through search terms
+  foreach ($search_terms_array as $search_term) {
 
-  ]);
-  //print_r($my_department_result_term_ids);
+    //start users meta query array for new term
+    $users_meta_query_array['relation']= 'AND';
 
-  //do we have matching department taxonomy terms?
-  if ($my_department_result_term_ids) {
+    //prepare clauses to add
 
-    //loop through the matching department IDs
-    foreach($my_department_result_term_ids as $my_department_result_term_id) {
+    //start temporary array for this clause
+    $temporary_array=[];
 
-      //add items to the meta query array for each field which could have a department ID
-      $users_meta_query_array[]=array(
-        'key' => 'pf_affiliation_approved',
-        'value' => $my_department_result_term_id,
-        'compare' => 'LIKE'
-      );
-      $users_meta_query_array[]=array(
-        'key' => 'pf_affiliation_2_approved',
-        'value' => $my_department_result_term_id,
-        'compare' => 'LIKE'
-      );
-      $users_meta_query_array[]=array(
-        'key' => 'pf_department_approved',
-        'value' => $my_department_result_term_id,
-        'compare' => 'LIKE'
-      );
-      $users_meta_query_array[]=array(
-        'key' => 'pf_department_2_approved',
-        'value' => $my_department_result_term_id,
-        'compare' => 'LIKE'
-      );
+    $temporary_array['relation']= 'OR'; //its going to be an OR
+
+    //add initial search on search key
+    $temporary_array[]=array(
+      'key' => 'pf_search_key',
+      'value' => $search_term,
+      'compare' => 'LIKE'
+    );
+
+    /* --disable this section if search performance is too bad-- */
+    //...and get any departments the names of which match the search term, and the ids of which occur in any of the user meta fields which link to departments...
+
+    //get the ID numbers of departments taxonomy terms whose names match this search term
+    $my_department_result_term_ids = get_terms([
+        'taxonomy' => 'department',
+        'hide_empty' => false,
+        'name__like' => $search_term,
+        'fields' => 'ids'
+
+    ]);
+    //print_r($my_department_result_term_ids);
+
+    //do we have matching department taxonomy terms?
+    if ($my_department_result_term_ids) {
+
+      //loop through the matching department IDs
+      foreach($my_department_result_term_ids as $my_department_result_term_id) {
+
+        //add items to the meta query array for each field which could have a department ID
+        $temporary_array[]=array(
+          'key' => 'pf_affiliation_approved',
+          'value' => $my_department_result_term_id,
+          'compare' => 'LIKE'
+        );
+        $temporary_array[]=array(
+          'key' => 'pf_affiliation_2_approved',
+          'value' => $my_department_result_term_id,
+          'compare' => 'LIKE'
+        );
+        $temporary_array[]=array(
+          'key' => 'pf_department_approved',
+          'value' => $my_department_result_term_id,
+          'compare' => 'LIKE'
+        );
+        $temporary_array[]=array(
+          'key' => 'pf_department_2_approved',
+          'value' => $my_department_result_term_id,
+          'compare' => 'LIKE'
+        );
+
+      }
 
     }
+    //echo '<pre>';
+    //print_r($users_meta_query_array);
+    //echo '</pre>';
+    //die();
+    /* --end section to disable if search performance is too bad-- */
 
+    //assemble the final, full meta query array
+    $users_meta_query_array[]=$temporary_array;
   }
+
+  //print_r($users_meta_query_array);
   //echo '<pre>';
   //print_r($users_meta_query_array);
   //echo '</pre>';
-  /* --end section to disable if search performance is too bad-- */
 
   //get users
   $myusers = get_users(
