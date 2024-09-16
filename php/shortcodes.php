@@ -613,8 +613,17 @@ function gmuw_pf_return_search_results_array_students($search){
   //set student table name
   $student_table_name = $wpdb->prefix . 'gmuw_pf_students';
 
+  //generate sql statement (the right way, when using LIKE wildcard %)
+  //prepare like value
+  $like = '%' . $wpdb->esc_like( str_replace("'","\'",$search) ) . '%';
+  //assemble sql statement
+  $sql = $wpdb->prepare(
+    "SELECT * FROM ".$student_table_name." WHERE student_name LIKE %s ORDER BY student_name;",
+    $like
+  );
+
   //get student results
-  $student_results = $wpdb->get_results( $wpdb->prepare("SELECT * FROM ".$student_table_name." WHERE student_name LIKE '%".str_replace("'","\'",$search)."%' ORDER BY student_name;" ) );
+  $student_results = $wpdb->get_results($sql);
 
   //do we have student reults?
   if ( $student_results ) {
