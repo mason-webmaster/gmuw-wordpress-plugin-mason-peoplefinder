@@ -383,11 +383,18 @@ function gmuw_pf_return_search_results_array_facultystaff($search){
   //begin to define get_users meta query array
   $users_meta_query_array=[];
 
+  //trim search
+  $search=trim($search);
+
   //split search on space
   $search_terms_array=(explode(' ',$search));
 
   //loop through search terms
   foreach ($search_terms_array as $search_term) {
+
+    //if the search term is empty, for example if there are multiple, consecutive spaces in the search string, then just ignore the rest of this iteration through the loop
+    if (empty($search_term)) { continue; }
+    //echo '<p>search term: |'.$search_term.'|</p>';
 
     //start users meta query array for new term
     $users_meta_query_array['relation']= 'AND';
