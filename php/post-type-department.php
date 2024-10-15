@@ -39,7 +39,7 @@ function gmuw_register_custom_post_type_departments() {
     // Set up arguments for the register_post_type function
     $args = array(
         'labels'            => $labels,
-        'public'            => true,
+        'public'            => false,
         'show_ui'           => true,
         'query_var'         => true,
         'rewrite'           => array('slug' => 'department'),
