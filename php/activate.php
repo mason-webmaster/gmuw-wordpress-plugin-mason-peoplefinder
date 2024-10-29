@@ -54,6 +54,7 @@ function gmuw_pf_create_custom_table_students($table_name_suffix=''){
      student_pronouns nvarchar(255) DEFAULT NULL,
      when_created datetime NOT NULL,
      when_modified datetime NOT NULL,
+     search_key text DEFAULT NULL
      PRIMARY KEY  (ID)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 

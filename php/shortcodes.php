@@ -625,7 +625,7 @@ function gmuw_pf_return_search_results_array_students($search){
   $like = '%' . $wpdb->esc_like( str_replace("'","\'",$search) ) . '%';
   //assemble sql statement
   $sql = $wpdb->prepare(
-    "SELECT * FROM ".$student_table_name." WHERE student_name LIKE %s ORDER BY student_name;",
+    "SELECT * FROM ".$student_table_name." WHERE search_key LIKE %s ORDER BY student_name;",
     $like
   );
 
