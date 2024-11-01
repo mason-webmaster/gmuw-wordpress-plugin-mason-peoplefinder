@@ -485,6 +485,20 @@ function gmuw_pf_return_search_results_array_facultystaff($search){
   //do we have users to display?
   if ($myusers) {
 
+    //loop through results first to determine how many are hidden
+    $number_hidden=0;
+    foreach ($myusers as $myuser) {
+      if ($myuser->pf_hide) {
+        $number_hidden++;
+      }
+    }
+
+    //and how many users are visible
+    $number_of_visibile_users=sizeof($myusers)-$number_hidden;
+
+    //if we have any non-hidden users, then proceed
+    if ($number_of_visibile_users>0) {
+
     //display faculty/staff heading
     $content .= '<h4>Faculty/Staff</h4>';
 
@@ -601,10 +615,12 @@ function gmuw_pf_return_search_results_array_facultystaff($search){
 
     }
 
+    }
+
   }
 
   //return value
-  return array(sizeof($myusers),$content); //array of number of results and content
+  return array($number_of_visibile_users,$content); //array of number of results and content
 
 }
 
