@@ -88,7 +88,7 @@ function gmuw_pf_display_page_import_students() {
 				    //echo "<p>Student email: $student_email</p>";
 				    $student_pronouns = trim(substr($line,86));
 				    //echo "<p>Student pronouns: $student_pronouns</p>";
-				    $search_key = $student_name . ' ' . trim(explode(",", $student_name)[1]) . ' ' . trim(explode(",", $student_name)[0]);
+				    $search_key = $student_name . ' ' . trim(explode(",", $student_name)[1]) . ' ' . trim(explode(",", $student_name)[0]). ' ' . trim(explode(",", $student_name)[1]);
 				    //echo "<p>Search key: $search_key</p>";
 
 					//Insert student record into database
