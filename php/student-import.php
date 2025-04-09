@@ -122,32 +122,42 @@ function gmuw_pf_display_page_import_students() {
 		//should we import?
 		if ($_POST['submit']=='import') {
 
-			//juggle tables
+			//juggle student records between tables
 
-			// drop old table
-			if ($wpdb->query("DROP TABLE IF EXISTS wp_gmuw_pf_students_old")===false) {
+			// delete all records from old students table
+			if ($wpdb->query("DELETE FROM wp_gmuw_pf_students_old")===false) {
 			echo $wpdb->print_error();
 			} else {
-			//echo "<p>Old students table removed.</p>";
+			//echo "<p>All records deleted from old students table.</p>";
 			}
 
-			// rename current table to old table
-			if ($wpdb->query("rename table wp_gmuw_pf_students to wp_gmuw_pf_students_old")===false) {
+			// copy all records from current students table to old students table
+			if ($wpdb->query("INSERT INTO wp_gmuw_pf_students_old SELECT * FROM wp_gmuw_pf_students")===false) {
 			echo $wpdb->print_error();
 			} else {
-			//echo "<p>Current students table renamed to old students table.</p>";
+			//echo "<p>All records copied from current students to old students table.</p>";
 			}
 
-			// rename new table to current table
-			if ($wpdb->query("rename table wp_gmuw_pf_students_new to wp_gmuw_pf_students")===false) {
+			// delete all records from current students table
+			if ($wpdb->query("DELETE FROM wp_gmuw_pf_students")===false) {
 			echo $wpdb->print_error();
 			} else {
-			//echo "<p>New students table renamed to current students table.</p>";
+			//echo "<p>All records deleted from current students table.</p>";
 			}
 
-			// create another new table for next time
-			gmuw_pf_create_custom_table_students('new');
-			//echo "<p>New students table created.</p>";
+			// copy all records from new students table to old students table
+			if ($wpdb->query("INSERT INTO wp_gmuw_pf_students SELECT * FROM wp_gmuw_pf_students_new")===false) {
+			echo $wpdb->print_error();
+			} else {
+			//echo "<p>All records copied from new students table to current students table.</p>";
+			}
+
+			// delete all records from new students table
+			if ($wpdb->query("DELETE FROM wp_gmuw_pf_students_new")===false) {
+			echo $wpdb->print_error();
+			} else {
+			//echo "<p>All records deleted from new students table.</p>";
+			}
 
 			echo '<p>New students in queue imported!</p>';
 
