@@ -386,6 +386,16 @@ function gmuw_pf_return_search_results_array_facultystaff($search){
   //trim search
   $search=trim($search);
 
+  //Workaround for search terms containing "de la *"
+  //strangely, search terms starting with "De" and consisting of multiple words do not work on WPE, but do work in a local development environment. I don't love workarounds, but this one is really odd. Therefore we're going to work around this by looking for "de la *" substrings in the search string, and then replacing the spaces with dashes so that we can treat them as a single term. Later, below, once we've split the search string by spaces into seperate terms, we'll then put this term that we temporarily combined with dashes back into its original form of having spaces for actually performing the search.
+  //does this search contain a "de la *" name substring?
+  if (preg_match("/de la [a-zA-Z]+/i", $search)) {
+    //$content.='<p><strong>The search string contains a "De La *" substring.</strong></p>';
+    //replace spaces in this portion of the string to make this a single term (for now - we'll fix it later)
+    $search = preg_replace("/([Dd])e ([Ll])a ([a-zA-Z]+)/i", '\1e-\2a-\3', $search);
+    //$content.='<p>The updated search string is: '.$search.'</p>';
+  }
+
   //split search on space
   $search_terms_array=(explode(' ',$search));
 
@@ -395,6 +405,15 @@ function gmuw_pf_return_search_results_array_facultystaff($search){
     //if the search term is empty, for example if there are multiple, consecutive spaces in the search string, then just ignore the rest of this iteration through the loop
     if (empty($search_term)) { continue; }
     //echo '<p>search term: |'.$search_term.'|</p>';
+
+    //Workaround for search terms containing "de la *"
+    //if this is a "de la *" name term, now that we're treating it as a single term by having replaced the spaces with dashes before we split the search string on spaces, we will put it back into its original form to actually perform the search
+    if (preg_match("/de-la-[a-zA-Z]+/i", $search_term)) {
+      //$content.='<p><strong>The search term is a "de-la-*" string.</strong></p>';
+      //replace dashes with spaces to put this search term back into its original form
+      $search_term = preg_replace("/([Dd])e-([Ll])a-([a-zA-Z]+)/i", '\1e \2a \3', $search_term);
+      //$content.='<p>The updated search term is: '.$search_term.'</p>';
+    }
 
     //start users meta query array for new term
     $users_meta_query_array['relation']= 'AND';
